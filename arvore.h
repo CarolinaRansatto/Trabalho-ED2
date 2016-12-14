@@ -18,7 +18,7 @@ typedef struct Aluno {
 
 typedef struct Arvore {
     // se é folha, folha = 1
-    int folha, *mats, nmats; // *mats pros nós internos...
+    int folha, *mats, nmats; // *mats pros nós internos e folhas...
     TA** alunos; // ...e **alunos pras folhas?
     struct Arvore **filhos, *prox, *ant;
     // por que usar duas estruturas diferentes:
@@ -27,8 +27,8 @@ typedef struct Arvore {
 } TABM;
 
 TABM* inicializa();
-TABM* cria_no();
-TABM* insere(TABM* a, TA* aln);
+TABM* cria_no(int t);
+TABM* insere(TABM* a, TA* aln, int t);
 TABM* retira(TABM* a, int mat);
 TA* busca(TABM* a, int mat);
 void libera(TABM* a);
