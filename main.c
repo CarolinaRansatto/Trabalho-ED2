@@ -2,10 +2,14 @@
 #include <stdlib.h>
 #include "arvore.c"
 
+#define T 2
+
+TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs);
+
 int main()
 {
     int opcao = 0;
-    printf("1 para inserir, 2 para imprimir, -1 para sair\n");
+    printf("1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, -1 para sair\n");
     scanf("%d",&opcao);
     int mat,chcs,npu,ntran,cur;
     float cr;
@@ -28,24 +32,31 @@ int main()
                 while (mat != -1) {
                     scanf("%f %d %d %d %d %[^\n]%*c", &cr,&ntran,&chcs,&npu,&cur,&nome);
                     aluno = cria_aluno(mat, chcs, npu, ntran, nome, cr, curs[cur - 1]);
-                    arvore = insere(arvore, aluno, 2);
+                    arvore = insere(arvore, aluno, T);
                     //printf("%d %f %s\n", aluno->mat, aluno->cr, aluno->nome);
                     scanf("%d", &mat);
                 }
                 //printf("%d %f %d %d %d %d %s\n", mat,cr,ntran,chcs,npu,cur,nome);
-                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
-            case 2:
+			case 2:
+				printf("Digite o nome do arquivo: ");
+				char narq[51];
+				scanf("%s", narq);
+				arvore = insere_arquivo(narq, arvore, T, curs);
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
+                scanf("%d",&opcao);
+				break;
+            case 3:
                 imprime(arvore, 0);
-                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
             default:
                 printf("Opcao invalida!\n");
-                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
-
         }
     }
 
@@ -54,4 +65,28 @@ int main()
     free(curs[2]);
 
     return 0;
+}
+
+TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs) {
+	FILE* fp = fopen(narq, "rt");
+	if (!fp) {
+		printf("O arquivo não existe.\n");
+		return a;
+	}
+	
+	int mat, chcs, npu, ntran, cur;
+    float cr;
+    char nome[51];
+    TA* aluno;
+	int r = fscanf(fp, "%d %f %d %d %d %d %[^\n]%*c", &mat, &cr, &ntran, &chcs, &npu, &cur, &nome);
+	printf("%d", r);
+
+	while (r == 7) {
+		aluno = cria_aluno(mat, chcs, npu, ntran, nome, cr, curs[cur - 1]);
+		a = insere(a, aluno, t);
+		r = fscanf(fp, "%d %f %d %d %d %d %[^\n]%*c", &mat, &cr, &ntran, &chcs, &npu, &cur, &nome);
+	}
+	
+	printf("Arquivo lido com sucesso.\n");
+	return a;
 }
