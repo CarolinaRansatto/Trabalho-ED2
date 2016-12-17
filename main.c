@@ -9,7 +9,7 @@ TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs);
 int main()
 {
     int opcao = 0;
-    printf("1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, -1 para sair\n");
+    printf("1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
     scanf("%d",&opcao);
     int mat,chcs,npu,ntran,cur;
     float cr;
@@ -37,7 +37,8 @@ int main()
                     scanf("%d", &mat);
                 }
                 //printf("%d %f %d %d %d %d %s\n", mat,cr,ntran,chcs,npu,cur,nome);
-			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
+
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
 			case 2:
@@ -45,18 +46,39 @@ int main()
 				char narq[51];
 				scanf("%s", narq);
 				arvore = insere_arquivo(narq, arvore, T, curs);
-			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
                 scanf("%d",&opcao);
 				break;
             case 3:
+				//remover
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 4:
                 imprime(arvore, 0);
-			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 5:
+                arvore = retira_formandos(arvore, 2);
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 6:
+                arvore = retira_alunos_tnc(arvore, 2);
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 7:
+                arvore = retira_alunos_ntotper(arvore, 2);
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
             default:
                 printf("Opcao invalida!\n");
-			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para imprimir, -1 para sair\n");
+			    printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para remover, 4 para imprimir, 5 para remover formandos, 6 para remover os que violem a regra do 50%, 7 para remover os que violem a regra de tempo maximo, -1 para sair\n");
                 scanf("%d",&opcao);
+                break;
         }
     }
 

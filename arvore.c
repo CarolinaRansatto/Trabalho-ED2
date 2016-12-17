@@ -212,6 +212,10 @@ void libera_lista(TL* l) {
 }
 
 TABM* retira_formandos(TABM* a, int t) {
+    if(!a){
+        printf("Arvore vazia!");
+        return NULL;
+    }
 	TABM* b = a;
 	while (!b->folha)
 		b = b->filhos[0];
@@ -239,6 +243,10 @@ TABM* retira_formandos(TABM* a, int t) {
 }
 
 TABM* retira_alunos_tnc(TABM* a, int t){
+    if(!a){
+        printf("Arvore vazia!");
+        return NULL;
+    }
     TABM *b = a;
     while(b->folha != 1){
         b = b->filhos[0];
@@ -278,4 +286,42 @@ TABM* retira_alunos_tnc(TABM* a, int t){
     return a;
 }
 
-TABM* retira_alunos_ntotper(TABM* a);
+TABM* retira_alunos_ntotper(TABM* a, int t){
+    if(!a){
+        printf("Arvore vazia!");
+        return NULL;
+    }
+    TABM *b = a;
+    while(b->folha != 1){
+        b = b->filhos[0];
+    }
+    int i;
+    int npu, ntran, ntotper;
+    TL *lista = NULL;
+	printf("Removidos: ");
+    while(1){
+        for(i=0; i<b->nmats;i++){
+            npu = b->alunos[i]->npu;
+            ntran = b->alunos[i]->ntran;
+            ntotper = b->alunos[i]->cur->ntotper;
+            if((npu-ntran)> ntotper ){
+               //cursou mais períodos que o permitido
+                ins_ini(lista, b->alunos[i]->mat);
+                printf("%d ", b->alunos[i]->mat);
+            }
+        }
+        if(!b->prox){
+            break;
+        }
+        b = b->prox;
+    }
+    printf("\n");
+	TL* l = lista;
+	while (l) {
+		//a = retira(a, l->info, t);
+		l = l->prox;
+	}
+    libera_lista(lista);
+    return a;
+}
+
