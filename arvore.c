@@ -217,7 +217,7 @@ TABM* retira_formandos(TABM* a, int t) {
 		b = b->filhos[0];
 	TL* lista = NULL;
 	printf("Removidos:");
-	
+
 	while (b) {
 		int i;
 		for (i = 0; i < b->nmats; i++)
@@ -228,7 +228,7 @@ TABM* retira_formandos(TABM* a, int t) {
 		b = b->prox;
 	}
 	printf("\n");
-	
+
 	TL* l = lista;
 	while (l) {
 		//a = retira(a, l->info, t);
@@ -238,21 +238,43 @@ TABM* retira_formandos(TABM* a, int t) {
 	return a;
 }
 
-TABM* retira_alunos_tnc(TABM* a){
+TABM* retira_alunos_tnc(TABM* a, int t){
     TABM *b = a;
     while(b->folha != 1){
         b = b->filhos[0];
     }
     int i;
+    int npu, ntran, chcs, tnc, cht;
+    TL *lista = NULL;
+	printf("Removidos: ");
     while(1){
         for(i=0; i<b->nmats;i++){
-            printf("%d ",b->alunos[i]->mat);
+            npu = b->alunos[i]->npu;
+            ntran = b->alunos[i]->ntran;
+            chcs = b->alunos[i]->chcs;
+            tnc = b->alunos[i]->cur->tnc;
+            cht = b->alunos[i]->cur->cht;
+            if((npu-ntran)>= tnc){
+               //chegou ao TNC(tempo nominal do curso)
+               if(chcs < (cht/2)){
+                    //nao atingiu 50% do cht
+                    ins_ini(lista, b->alunos[i]->mat);
+                    printf("%d ", b->alunos[i]->mat);
+               }
+            }
         }
         if(!b->prox){
             break;
         }
         b = b->prox;
     }
+    printf("\n");
+	TL* l = lista;
+	while (l) {
+		//a = retira(a, l->info, t);
+		l = l->prox;
+	}
+    libera_lista(lista);
     return a;
 }
 

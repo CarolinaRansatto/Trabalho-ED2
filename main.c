@@ -32,7 +32,6 @@ int main()
                     //printf("%d %f %s\n", aluno->mat, aluno->cr, aluno->nome);
                     scanf("%d", &mat);
                 }
-                arvore = retira_formandos(arvore, 2);
                 //printf("%d %f %d %d %d %d %s\n", mat,cr,ntran,chcs,npu,cur,nome);
                 printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
