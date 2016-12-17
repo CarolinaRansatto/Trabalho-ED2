@@ -3,3 +3,51 @@
 	<stdio.h>
 	<stdlib.h>
 
+1481938910 
+
+1481941079 source:c:\users\carolina\documents\github\trabalho-ed2\arvore.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"arvore.h"
+
+1481938910 c:\users\carolina\documents\github\trabalho-ed2\arvore.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1481941365 source:c:\users\carolina\documents\github\trabalho-ed2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"arvore.h"
+
+1481938910 c:\users\carolina\documents\github\trabalho-ed2\arvore.c
+	"arvore.h"
+
+1481938716 source:/media/carol/EA60B45360B427E9/Users/Carolina/Documents/GitHub/Trabalho-ED2/arvore.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"arvore.h"
+
+1481935310 /media/carol/EA60B45360B427E9/Users/Carolina/Documents/GitHub/Trabalho-ED2/arvore.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1481945045 source:/home/carol/Área de Trabalho/Trabalho-ED2/arvore.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"arvore.h"
+
+1481935310 /home/carol/Área de Trabalho/Trabalho-ED2/arvore.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1481944374 source:/home/carol/Área de Trabalho/Trabalho-ED2/main.c
+	<stdio.h>
+	<stdlib.h>
+	"arvore.h"
+
