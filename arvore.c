@@ -231,10 +231,11 @@ TABM* retira_formandos(TABM* a, int t) {
 	
 	TL* l = lista;
 	while (l) {
-		//retira(a, l->info, t);
+		//a = retira(a, l->info, t);
 		l = l->prox;
 	}
 	libera_lista(lista);
+	return a;
 }
 
 TABM* retira_alunos_tnc(TABM* a){
