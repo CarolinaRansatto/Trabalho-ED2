@@ -129,16 +129,21 @@ TABM* insere(TABM* a, TA* aln, int t) {
 TABM* retira(TABM* a, int mat, int t);
 
 TA* busca(TABM* a, int mat) {
-    // no método que ela deu retornava a folha em que deveria estar.
-    // foi uma boa ideia mudar?
     if (!a) return NULL;
     int i = 0;
     while ((i < a->nmats) && (mat > a->mats[i])) i++;
     if ((i < a->nmats) && (a->folha) && (mat == a->alunos[i]->mat))
-        return a->alunos[i];
+        return a;
     if (a->folha) return NULL;
     if (a->mats[i] == mat) i++;
     return busca(a->filhos[i], mat);
+}
+
+TA* busca_aluno(TABM* a, int mat) {
+    TABM* b = busca(a, mat);
+	int i = 0;
+	while ((i < b->nmats) && (mat > b->mats[i])) i++;
+    return b->alunos[i];
 }
 
 void libera(TABM* a) {
