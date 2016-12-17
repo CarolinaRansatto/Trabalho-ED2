@@ -5,7 +5,7 @@
 int main()
 {
     int opcao = 0;
-    printf("1 para inserir, 2 para imprimir, -1 para sair\n");
+    printf("1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
     scanf("%d",&opcao);
     int mat,chcs,npu,ntran,cur;
     float cr;
@@ -33,18 +33,40 @@ int main()
                     scanf("%d", &mat);
                 }
                 //printf("%d %f %d %d %d %d %s\n", mat,cr,ntran,chcs,npu,cur,nome);
-                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
             case 2:
                 imprime(arvore, 0);
-                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+
+            case 3:
+                //remover
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 4:
+                arvore = retira_formandos(arvore, 2);
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 5:
+                arvore = retira_alunos_tnc(arvore, 2);
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
+                scanf("%d",&opcao);
+                break;
+            case 6:
+                arvore = retira_alunos_ntotper(arvore, 2);
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
             default:
                 printf("Opcao invalida!\n");
-                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
+                printf("\n1 para inserir, 2 para imprimir, 4 para remover formandos, 5 para remover os que violem a regra do 50%, 6 para remover os que violem a regra de tempo maximo,  -1 para sair\n");
                 scanf("%d",&opcao);
+                break;
 
         }
     }
