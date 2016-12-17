@@ -51,7 +51,7 @@ TABM* divisao(TABM* x, int i, TABM* y, int t) {
     int j;
 
     if (z->folha) {
-        z->nmats = t; // vai ter mais chaves no nÛ da direita
+        z->nmats = t; // vai ter mais chaves no n√≥ da direita
         for (j = 0; j < t; j++) {
             z->mats[j] = y->mats[j + t - 1];
             z->alunos[j] = y->alunos[j + t - 1];
@@ -60,7 +60,7 @@ TABM* divisao(TABM* x, int i, TABM* y, int t) {
         y->prox = z;
         z->ant = y;
     }
-    else { // pra nÛ interno funciona como ·rvore b
+    else { // pra n√≥ interno funciona como √°rvore b
         z->nmats = t - 1;
         for (j = 0; j < t - 1; j++)
             z->mats[j] = y->mats[j + t];
@@ -76,7 +76,7 @@ TABM* divisao(TABM* x, int i, TABM* y, int t) {
         x->mats[j] = x->mats[j - 1];
     }
     x->filhos[i] = z;
-    x->mats[i - 1] = y->mats[t - 1]; // igual ‡ primeira matrÌcula de z se z for folha, "promovida" se z for nÛ interno
+    x->mats[i - 1] = y->mats[t - 1]; // igual √† primeira matr√≠cula de z se z for folha, "promovida" se z for n√≥ interno
     ++x->nmats;
     return x;
 }
@@ -176,7 +176,7 @@ void imprime(TABM *a, int andar){
   }
 }
 
-// devÌamos retornar um int pra saber se as alteraÁıes foram bem sucedidas ou n„o?
+// dev√≠amos retornar um int pra saber se as altera√ß√µes foram bem sucedidas ou n√£o?
 
 void altera_chcs(TABM* a, int mat, int chcs) {
     TA* aln = busca_aluno(a, mat);
@@ -210,6 +210,134 @@ void libera_lista(TL* l) {
 		l = l->prox;
 		free(a);
 	}
+}
+
+TABM* remover(TABM* a, int mat, int t){
+	if(!a) return NULL;
+	int i = 0;
+	
+	printf("Removendo %d...\n", mat);
+	
+	while ((i < a->nmats) && (mat >= a->mats[i])) i++;
+	//if(mat==a->mats[i]) i++;
+	
+	if((i<a->nmats)&&(a->mats[i]==mat)&&(a->folha)){ //CASO 1
+		printf("\nCASO 1\n");
+		int j;
+		free(a->alunos[i]); 
+		for(j=i;j<a->nmats-1;j++){
+			a->mats[j] = a->mats[j+1];
+			a->alunos[j] = a->alunos[j+1];
+		}
+		a->alunos[j] = NULL;
+		a->nmats--;
+		return a;
+	}
+	
+	TABM* y = a->filhos[i], *z = NULL;
+	if(y->nmats == t-1){  //CASO 3A OU 3B
+		if((i<a->nmats) && (a->filhos[i+1]->nmats >=t)){ // CASO 3A
+			printf("\nCASO 3A: i menor que nmats\n");
+			z = a->filhos[i+1];
+			y->mats[t-1] = z->mats[0]; //da a y uma mat de z
+			if(y->folha){ //opcional
+				y->filhos[y->nmats] = NULL;
+			}
+			y->nmats++;
+			
+			a->mats[i] = z->mats[1]; //da a arvore a proxima mat de z
+			
+			int j;
+			for(j=0; j<z->nmats-1; j++){ //ajustar mats de z
+				z->mats[j] = z->mats[j+1];
+			}
+			
+			if(!y->folha){
+				y->filhos[y->nmats] = z->filhos[0];  //envia ponteiro menor de z para o novo elemento de y
+				
+				for(j=0; j<z->nmats;j++){ //ajustar filhos de z
+					z->filhos[j] = z->filhos[j+1];
+				}
+				z->filhos[j] = NULL;
+			}
+			else{
+				y->alunos[t-1] = z->alunos[0]; // ajusta o ponteiro do aluno que saiu de z e foi para y
+				
+				for(j=0; j<z->nmats-1;j++){ //ajustar alunos de z
+					z->alunos[j] = z->alunos[j+1];
+				}  
+				z->alunos[z->nmats-1] = NULL;
+			}
+			
+			z->nmats--;
+			a->filhos[i] = remover(a->filhos[i],mat,t);
+			return a;
+		}
+		
+		if((i > 0) && (!z) && (a->filhos[i-1]->nmats >=t)){ //CASO 3A
+			printf("\nCASO 3A: i igual a nmats\n");
+			z = a->filhos[i-1];
+			int j;
+			for(j=y->nmats; j>0; j++){ //encaixar lugar da nova mat
+				y->mats[j] = y->mats[j-1];
+			}
+			
+			y->mats[0] = z->mats[z->nmats-1];
+			a->mats[i] = y->mats[0];
+			
+			if(y->folha) y->filhos[y->nmats+1] = NULL; //opcional
+			y->nmats++;
+			
+			if(!y->folha){
+				for(j=y->nmats; j>0; j--){ //encaixar lugar dos filhos da nova chave
+					y->filhos[j] = y->filhos[j-1];
+				}
+				
+				y->filhos[0] = z->filhos[z->nmats]; //ajusta o ponteiro do filho do novo elemento de y
+				z->filhos[z->nmats] = NULL;
+			}
+			else{
+				for(j=y->nmats-1; j>0; j--){ //rearranjar informa√ß√µes dos alunos
+					y->alunos[j] = y->alunos[j-1];
+				}
+				
+				y->alunos[0] = z->alunos[z->nmats-1]; //ajusta o ponteiro do aluno do novo elemento de y
+				z->alunos[z->nmats-1] = NULL;
+			}
+			
+			z->nmats--;
+			a->filhos[i] = remover(a->filhos[i],mat,t);
+			return a;			
+		}
+		
+		if(!z){ //CASO 3B
+			if(i < a->nmats && a->filhos[i+1]->nmats == t-1){
+				printf("\nCASO 3B: i menor que nchaves\n");
+				z = a->filhos[i+1];
+				int j;
+				for(j=0; j<t-1; j++){
+					y->mats[(t-1)+j] = z->mats[j];
+					y->nmats++;
+				}
+				if(!y->folha){
+					for(j=0; j<t; j++){
+						y->filhos[t+j] = z->filhos[j];
+					}
+				}
+				else{
+					printf("AFE");
+				}
+				 
+			}
+		}
+	}
+	a->filhos[i] = remover(a->filhos[i], mat, t);
+	return a;
+}	
+
+TABM* retira(TABM* a, int mat, int t){
+  if(!a || !busca(a, mat)) return a;
+  return remover(a, mat, t);
 }
 
 TABM* retira_formandos(TABM* a, int t) {
@@ -306,7 +434,7 @@ TABM* retira_alunos_ntotper(TABM* a, int t){
             ntran = b->alunos[i]->ntran;
             ntotper = b->alunos[i]->cur->ntotper;
             if((npu-ntran)> ntotper ){
-               //cursou mais perÌodos que o permitido
+               //cursou mais per√≠odos que o permitido
                 ins_ini(lista, b->alunos[i]->mat);
                 printf("%d ", b->alunos[i]->mat);
             }
