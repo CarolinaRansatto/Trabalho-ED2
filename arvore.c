@@ -197,5 +197,21 @@ void altera_ntran(TABM* a, int mat, int ntran) {
 }
 
 TABM* retira_formandos(TABM* a);
-TABM* retira_alunos_tnc(TABM* a);
+TABM* retira_alunos_tnc(TABM* a){
+    TABM *b = a;
+    while(b->folha != 1){
+        b = b->filhos[0];
+    }
+    int i;
+    while(1){
+        for(i=0; i<b->nmats;i++){
+            printf("%d ",b->alunos[i]->mat);
+        }
+        if(!b->prox){
+            break;
+        }
+        b = b->prox;
+    }
+    return a;
+}
 TABM* retira_alunos_ntotper(TABM* a);

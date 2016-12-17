@@ -26,6 +26,11 @@ typedef struct Arvore {
     // porque os nós podem ter infos que não existem
 } TABM;
 
+typedef struct Lista {
+	int info;
+	struct Lista *prox;
+}TL;
+
 /*
 TABM* inicializa();
 TABM* cria_no(int t);

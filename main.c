@@ -32,6 +32,7 @@ int main()
                     printf("%d %f %s\n", aluno->mat, aluno->cr, aluno->nome);
                     scanf("%d", &mat);
                 }
+                retira_alunos_tnc(arvore);
                 //printf("%d %f %d %d %d %d %s\n", mat,cr,ntran,chcs,npu,cur,nome);
                 printf("1 para inserir, 2 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
