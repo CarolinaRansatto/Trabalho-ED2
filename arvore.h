@@ -26,6 +26,7 @@ typedef struct Arvore {
     // porque os nós podem ter infos que não existem
 } TABM;
 
+/*
 TABM* inicializa();
 TABM* cria_no(int t);
 TABM* insere(TABM* a, TA* aln, int t);
@@ -41,3 +42,4 @@ void altera_ntran(TABM* a, int mat, int ntran);
 TABM* retira_formandos(TABM* a);
 TABM* retira_alunos_tnc(TABM* a);
 TABM* retira_alunos_ntotper(TABM* a);
+*/

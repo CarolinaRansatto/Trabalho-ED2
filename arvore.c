@@ -16,6 +16,40 @@ TABM* cria_no(int t) {
     return a;
 }
 
+TA* cria_aluno(int mat, int chcs, int npu, int ntran, char *nome, float cr, int curriculo){
+    TA* aluno = (TA*) malloc(sizeof(TA));
+    aluno->mat = mat;
+    aluno->chcs = chcs;
+    aluno->npu = npu;
+    aluno->ntran = ntran;
+    strcpy(aluno->nome, nome);
+    aluno->cr = cr;
+    //faz selecao dos curriculos
+    TC* cur = (TC*) malloc(sizeof(TC));
+    switch(curriculo){
+        case 1:
+            cur->cht = 2955;
+            cur->ntotper = 16;
+            cur->tnc = 8;
+            break;
+        case 2:
+            cur->cht = 3524;
+            cur->ntotper = 12;
+            cur->tnc = 8;
+            break;
+        case 3:
+            cur->cht = 3200;
+            cur->ntotper = 12;
+            cur->tnc = 8;
+            break;
+        default:
+            printf("Valor de curriculo invalido!");
+            exit(1);
+    }
+    aluno->cur = cur;
+    return aluno;
+}
+
 TABM* insere(TABM* a, TA* aln, int t) {
     if (!a) {
         a = cria_no(t);
@@ -39,6 +73,8 @@ TA* busca(TABM* a, int mat) {
     return busca(a->filhos[i], mat);
 }
 
+//CRIAR METODO PARA LIBERAR ESTRUTURA TA
+/*
 void libera(TABM* a) {
     if (a) {
         int i;
@@ -54,7 +90,7 @@ void libera(TABM* a) {
         free(a);
     }
 }
-
+*/
 void imprime(TABM* a);
 
 void altera_chcs(TABM* a, int mat, int chcs) {
