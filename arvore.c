@@ -196,7 +196,34 @@ void altera_ntran(TABM* a, int mat, int ntran) {
     // devíamos fazer um método pra só somar um a ntran?
 }
 
-TABM* retira_formandos(TABM* a);
+TL* ins_ini(TL* l, int info) {
+	TL* novo = (TL*) malloc(sizeof(TL));
+	novo->prox = l;
+	return novo;
+}
+
+void libera_lista(TL* l) {
+	while (l) {
+		TL* a = l;
+		l = l->prox;
+		free(a);
+	}
+}
+
+TABM* retira_formandos(TABM* a) {
+	TABM* b = a;
+	while (!b->folha)
+		b = b->filhos[0];
+	TL* lista = NULL;
+	
+	/*while (b) {
+		int i;
+		for (i = 0; i < b->nmats; i++)
+			if (b->alunos[i]->chcs >= b->alunos[i]->cur->cht)
+				
+	}*/
+}
+
 TABM* retira_alunos_tnc(TABM* a){
     TABM *b = a;
     while(b->folha != 1){
