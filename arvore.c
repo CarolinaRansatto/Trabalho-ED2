@@ -24,8 +24,9 @@ TABM* cria_no(int t) {
     return a;
 }
 
-TC* cria_curriculo(int cht, int ntotper, int tnc) {
+TC* cria_curriculo(int num, int cht, int ntotper, int tnc) {
     TC* cur = (TC*) malloc(sizeof(TC));
+    cur->num = num;
     cur->cht = cht;
     cur->ntotper = ntotper;
     cur->tnc = tnc;

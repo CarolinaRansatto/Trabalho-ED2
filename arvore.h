@@ -4,7 +4,7 @@
 
 typedef struct Curriculo {
     // carga horária total, nº máximo de períodos, tempo nominal do curso
-    int cht, ntotper, tnc;
+    int num, cht, ntotper, tnc;
 } TC;
 
 typedef struct Aluno {

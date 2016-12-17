@@ -13,7 +13,7 @@ int main()
 	    printf("Valor inválido (t deve ser maior que 1).\nDigite o valor de t: ");
 	    scanf("%d", &t);
 	}
-    
+
     printf("1 para inserir manualmente, 2 para inserir de arquivo, 3 para buscar, 4 para remover, 5 para imprimir, 6 para remover formandos, 7 para remover os que violem a regra do 50%%, 8 para remover os que violem a regra de tempo maximo, -1 para sair\n");
     scanf("%d",&opcao);
     int mat,chcs,npu,ntran,cur;
@@ -23,9 +23,9 @@ int main()
     TABM* arvore = inicializa();
 
     TC* curs[3];
-    curs[0] = cria_curriculo(2955, 16, 8);
-    curs[1] = cria_curriculo(3524, 12, 8);
-    curs[2] = cria_curriculo(3200, 12, 8);
+    curs[0] = cria_curriculo(1, 2955, 16, 8);
+    curs[1] = cria_curriculo(2, 3524, 12, 8);
+    curs[2] = cria_curriculo(3, 3200, 12, 8);
 
     while(opcao != -1){
         switch(opcao){
@@ -63,8 +63,8 @@ int main()
 				scanf("%d", &mat);
 				aluno = busca_aluno(arvore, mat);
 				if (!aluno) printf("Aluno nao encontrado\n");
-				else printf("Nome: %s\nMatricula: %d\nCR:%f\nPeriodos na universidade: %d\nNumero de trancamentos: %d\nCarga horaria cursada com sucesso: %d\n", 
-					aluno->nome, aluno->mat, aluno->cr, aluno->npu, aluno->ntran, aluno->chcs);
+				else printf("Nome: %s\nMatricula: %d\nCR:%f\nPeriodos na universidade: %d\nNumero de trancamentos: %d\nCarga horaria cursada com sucesso: %d\nNumero do curriculo: %d\n",
+					aluno->nome, aluno->mat, aluno->cr, aluno->npu, aluno->ntran, aluno->chcs, aluno->cur->num);
 				printf("\n1 para inserir manualmente, 2 para inserir de arquivo, 3 para buscar, 4 para remover, 5 para imprimir, 6 para remover formandos, 7 para remover os que violem a regra do 50%%, 8 para remover os que violem a regra de tempo maximo, -1 para sair\n");
                 scanf("%d",&opcao);
 				break;
@@ -114,7 +114,7 @@ TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs) {
 		printf("O arquivo não existe.\n");
 		return a;
 	}
-	
+
 	int mat, chcs, npu, ntran, cur;
     float cr;
     char nome[51];
@@ -130,7 +130,7 @@ TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs) {
         }
 		r = fscanf(fp, "%d %f %d %d %d %d %[^\n]%*c", &mat, &cr, &ntran, &chcs, &npu, &cur, &nome);
 	}
-	
+
 	printf("Arquivo lido com sucesso.\n");
 	return a;
 }
