@@ -128,7 +128,7 @@ TABM* insere(TABM* a, TA* aln, int t) {
 
 TABM* retira(TABM* a, int mat, int t);
 
-TA* busca(TABM* a, int mat) {
+TABM* busca(TABM* a, int mat) {
     if (!a) return NULL;
     int i = 0;
     while ((i < a->nmats) && (mat > a->mats[i])) i++;
@@ -141,6 +141,7 @@ TA* busca(TABM* a, int mat) {
 
 TA* busca_aluno(TABM* a, int mat) {
     TABM* b = busca(a, mat);
+    if (!b) return NULL;
 	int i = 0;
 	while ((i < b->nmats) && (mat > b->mats[i])) i++;
     return b->alunos[i];
@@ -174,26 +175,26 @@ void imprime(TABM *a, int andar){
   }
 }
 
+// devíamos retornar um int pra saber se as alterações foram bem sucedidas ou não?
+
 void altera_chcs(TABM* a, int mat, int chcs) {
-    TA* aln = busca(a, mat);
+    TA* aln = busca_aluno(a, mat);
     if (aln) aln->chcs = chcs;
-    // devíamos retornar um int pra saber se foi bem sucedido ou não?
 }
 
 void altera_cr(TABM* a, int mat, float cr) {
-    TA* aln = busca(a, mat);
+    TA* aln = busca_aluno(a, mat);
     if (aln) aln->cr = cr;
 }
 
 void altera_npu(TABM* a, int mat, int npu) {
-    TA* aln = busca(a, mat);
+    TA* aln = busca_aluno(a, mat);
     if (aln) aln->npu = npu;
 }
 
 void altera_ntran(TABM* a, int mat, int ntran) {
-    TA* aln = busca(a, mat);
+    TA* aln = busca_aluno(a, mat);
     if (aln) aln->ntran = ntran;
-    // devíamos fazer um método pra só somar um a ntran?
 }
 
 TL* ins_ini(TL* l, int info) {
@@ -210,18 +211,30 @@ void libera_lista(TL* l) {
 	}
 }
 
-TABM* retira_formandos(TABM* a) {
+TABM* retira_formandos(TABM* a, int t) {
 	TABM* b = a;
 	while (!b->folha)
 		b = b->filhos[0];
 	TL* lista = NULL;
+	printf("Removidos:");
 	
-	/*while (b) {
+	while (b) {
 		int i;
 		for (i = 0; i < b->nmats; i++)
-			if (b->alunos[i]->chcs >= b->alunos[i]->cur->cht)
-				
-	}*/
+			if (b->alunos[i]->chcs >= b->alunos[i]->cur->cht) {
+				ins_ini(lista, b->alunos[i]->mat);
+				printf(" %d", b->alunos[i]->mat);
+			}
+		b = b->prox;
+	}
+	printf("\n");
+	
+	TL* l = lista;
+	while (l) {
+		//retira(a, l->info, t);
+		l = l->prox;
+	}
+	libera_lista(lista);
 }
 
 TABM* retira_alunos_tnc(TABM* a){
@@ -241,4 +254,5 @@ TABM* retira_alunos_tnc(TABM* a){
     }
     return a;
 }
+
 TABM* retira_alunos_ntotper(TABM* a);

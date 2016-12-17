@@ -29,22 +29,22 @@ int main()
                     scanf("%f %d %d %d %d %[^\n]%*c", &cr,&ntran,&chcs,&npu,&cur,&nome);
                     aluno = cria_aluno(mat, chcs, npu, ntran, nome, cr, curs[cur - 1]);
                     arvore = insere(arvore, aluno, 2);
-                    printf("%d %f %s\n", aluno->mat, aluno->cr, aluno->nome);
+                    //printf("%d %f %s\n", aluno->mat, aluno->cr, aluno->nome);
                     scanf("%d", &mat);
                 }
-                retira_alunos_tnc(arvore);
+                retira_formandos(arvore, 2);
                 //printf("%d %f %d %d %d %d %s\n", mat,cr,ntran,chcs,npu,cur,nome);
-                printf("1 para inserir, 2 para imprimir, -1 para sair\n");
+                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
             case 2:
                 imprime(arvore, 0);
-                printf("1 para inserir, 2 para imprimir, -1 para sair\n");
+                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
                 break;
             default:
                 printf("Opcao invalida!\n");
-                printf("1 para inserir, 2 para imprimir, -1 para sair\n");
+                printf("\n1 para inserir, 2 para imprimir, -1 para sair\n");
                 scanf("%d",&opcao);
 
         }
