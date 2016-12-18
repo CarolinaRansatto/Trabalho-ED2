@@ -127,8 +127,6 @@ TABM* insere(TABM* a, TA* aln, int t) {
     return a;
 }
 
-TABM* retira(TABM* a, int mat, int t);
-
 TABM* busca(TABM* a, int mat) {
     if (!a) return NULL;
     int i = 0;
