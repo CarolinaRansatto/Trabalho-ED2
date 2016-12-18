@@ -218,7 +218,6 @@ void libera_lista(TL* l) {
 	}
 }
 
-
 TABM* remover(TABM* a, int mat, int t){
 	if(!a) return NULL;
 	int i = 0;
@@ -330,9 +329,11 @@ TABM* remover(TABM* a, int mat, int t){
 			return a;
 		}
 
+
+
 		//CASO 3B  TEM Q MEXER TA MTO ERRADO
 		if(f < a->nmats) {
-			printf("CASO 3B\n");
+			printf("CASO 3B i menor que nmats...\n");
 			if(!y->folha){
 				printf("no\n");
 				z = a->filhos[f + 1];
@@ -347,15 +348,12 @@ TABM* remover(TABM* a, int mat, int t){
 
 				y->nmats += z->nmats;
 				y->filhos[y->nmats] = z->filhos[z->nmats];
-				libera(z);
 
-				for(j = f + 1; j < a->nmats; j++){
-					a->mats[j - 1] = a->mats[j];
-					a->filhos[j] = a->filhos[j + 1];
+				for(j=0; j<=z->nmats; j++){ //desvincula z de seus filhos
+					z->filhos[j] = NULL;
 				}
+				libera(z);                  //libera z
 
-				a->nmats--;
-				a->filhos[f] = remover(a->filhos[f], mat, t);
 			}
 			else{
 				printf("folha\n");
@@ -367,18 +365,42 @@ TABM* remover(TABM* a, int mat, int t){
 				}
 
 				y->nmats += z->nmats;
+				for(j=0; j<y->nmats+1; j++) y->filhos[j] = NULL; //opcional (p/ ter certeza q os filhos de folha sao NULL)
 				y->prox = z->prox;
 				if (y->prox) y->prox->ant = y;
-				libera(z);
 
+				for(j=0; j<z->nmats; j++) z->alunos[j] = NULL;
+				libera(z);
+			}
+
+			if(a->nmats == 1){ //so se for a raiz da arvore original
+				a->filhos[0] = NULL;
+				a->filhos[1] = NULL;
+				libera(a);
+
+				a = y;
+			}
+			else{
+                int j;
+				for(j = f; j< a->nmats-1; j++){
+					a->mats[j] = a->mats[j+1];
+					a->filhos[j+1] = a->filhos[j+2];
+				}
+
+				a->filhos[j] = NULL; // num de filhos = num de mats + 1
+
+				/*
 				for(j = f + 1; j < a->nmats; j++){
 					a->mats[j - 1] = a->mats[j];
 					a->filhos[j] = a->filhos[j + 1];
 				}
+				*/
 
 				a->nmats--;
-				a->filhos[f] = remover(a->filhos[f], mat, t);
 			}
+
+			//a->filhos[f] = remover(a->filhos[f], mat, t);
+			a = remover(a, mat, t);
 		}
 		else { // CASO 3B se y for o último filho
 			printf("CASO 3B\n");
@@ -404,7 +426,8 @@ TABM* remover(TABM* a, int mat, int t){
 				}
 
 				a->nmats--;
-				a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
+				//a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
+				a = remover(a, mat, t);
 			}
 			else {
 				printf("folha\n");
@@ -426,7 +449,8 @@ TABM* remover(TABM* a, int mat, int t){
 				}
 
 				a->nmats--;
-				a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
+				//a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
+				a = remover(a, mat, t);
 			}
 		}
 	}
