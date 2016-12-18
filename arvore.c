@@ -329,9 +329,6 @@ TABM* remover(TABM* a, int mat, int t){
 			return a;
 		}
 
-
-
-		//CASO 3B  TEM Q MEXER TA MTO ERRADO
 		if(f < a->nmats) {
 			printf("CASO 3B i menor que nmats...\n");
 			if(!y->folha){
@@ -377,7 +374,6 @@ TABM* remover(TABM* a, int mat, int t){
 				a->filhos[0] = NULL;
 				a->filhos[1] = NULL;
 				libera(a);
-
 				a = y;
 			}
 			else{
@@ -386,16 +382,7 @@ TABM* remover(TABM* a, int mat, int t){
 					a->mats[j] = a->mats[j+1];
 					a->filhos[j+1] = a->filhos[j+2];
 				}
-
 				a->filhos[j] = NULL; // num de filhos = num de mats + 1
-
-				/*
-				for(j = f + 1; j < a->nmats; j++){
-					a->mats[j - 1] = a->mats[j];
-					a->filhos[j] = a->filhos[j + 1];
-				}
-				*/
-
 				a->nmats--;
 			}
 
@@ -417,17 +404,10 @@ TABM* remover(TABM* a, int mat, int t){
 				}
 
 				z->nmats += y->nmats;
-				z->filhos[z->nmats] = y->filhos[y->nmats];
+				z->filhos[z->nmats] = y->filhos[y->nmats]; //num filhos = nmats + 1
+
+				for(j=0; j<y->nmats+1; j++) y->filhos[j] = NULL;
 				libera(y);
-
-				for(j = f; j < a->nmats; j++){
-					a->mats[j - 1] = a->mats[j];
-					a->filhos[j] = a->filhos[j + 1];
-				}
-
-				a->nmats--;
-				//a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
-				a = remover(a, mat, t);
 			}
 			else {
 				printf("folha\n");
@@ -441,17 +421,29 @@ TABM* remover(TABM* a, int mat, int t){
 				z->nmats += y->nmats;
 				z->prox = y->prox;
 				if (z->prox) z->prox->ant = z;
+
+				for(j=0; j<y->nmats; j++) y->alunos[j] = NULL;
 				libera(y);
-
-				for(j = f; j < a->nmats; j++){
-					a->mats[j - 1] = a->mats[j];
-					a->filhos[j] = a->filhos[j + 1];
-				}
-
-				a->nmats--;
-				//a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
-				a = remover(a, mat, t);
 			}
+
+			if(a->nmats==1){   //so acontece se for a raiz original da arvore
+                a->filhos[0] = NULL;
+                a->filhos[1] = NULL;
+                libera(a);
+                a = z;
+			}
+			else{
+                int j;
+                for(j = f-1; j<a->nmats-1; j++){
+                    a->mats[j] = a->mats[j+1];
+                    a->filhos[j+1] = a->filhos[j+2];
+                }
+                a->filhos[a->nmats] = NULL;
+                a->nmats--;
+			}
+
+            //a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
+            a = remover(a, mat, t);
 		}
 	}
 	a->filhos[f] = remover(a->filhos[f], mat, t);
