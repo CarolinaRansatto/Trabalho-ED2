@@ -13,8 +13,8 @@ int main()
 	    printf("Valor invalido (t deve ser maior que 1).\nDigite o valor de t: ");
 	    scanf("%d", &t);
 	}
-	
-	char* instrucoes = " 0: Inserir alunos manualmente\n 1: Inserir alunos de arquivo\n 2: Buscar aluno\n 3: Remover aluno\n 4: Alterar CR\n 5: Alterar carga horaria\n 6: Alterar número de períodos na universidade\n 7: Alterar número de trancamentos\n 8: Imprimir arvore\n 9: Remover formandos\n10: Remover alunos que violem a regra dos 50%\n11: Remover alunos que violem a regra de tempo maximo\n-1: Sair\n";
+
+	char* instrucoes = " 0: Inserir alunos manualmente\n 1: Inserir alunos de arquivo\n 2: Buscar aluno\n 3: Remover aluno\n 4: Alterar CR\n 5: Alterar carga horaria\n 6: Alterar numero de períodos na universidade\n 7: Alterar numero de trancamentos\n 8: Imprimir arvore\n 9: Remover formandos\n10: Remover alunos que violem a regra dos 50%\n11: Remover alunos que violem a regra de tempo maximo\n-1: Sair\n";
 
     printf("%s", instrucoes);
     scanf("%d",&opcao);
@@ -38,8 +38,8 @@ int main()
                 scanf("%d", &mat);
                 while (mat != -1) {
                     scanf("%f %d %d %d %d %[^\n]%*c", &cr,&ntran,&chcs,&npu,&cur,&nome);
-                    if ((cur > 3)||(cur < 1)) printf("Currículo %d inválido\n", cur);
-                    else if (busca_aluno(arvore, mat)) printf("Matrícula %d já cadastrada\n", mat);
+                    if ((cur > 3)||(cur < 1)) printf("Curriculo %d invalido\n", cur);
+                    else if (busca_aluno(arvore, mat)) printf("Matricula %d ja cadastrada\n", mat);
                     else {
 	                    aluno = cria_aluno(mat, chcs, npu, ntran, nome, cr, curs[cur - 1]);
     	                arvore = insere(arvore, aluno, t);
@@ -61,7 +61,7 @@ int main()
                 scanf("%d",&opcao);
 				break;
 			case 2:
-				printf("Digite a matrícula: ");
+				printf("Digite a matricula: ");
 				scanf("%d", &mat);
 				aluno = busca_aluno(arvore, mat);
 				if (!aluno) printf("Aluno nao encontrado\n");
@@ -71,7 +71,7 @@ int main()
                 scanf("%d",&opcao);
 				break;
             case 3:
-            	printf("Digite a matrícula do aluno a ser removido: ");
+            	printf("Digite a matricula do aluno a ser removido: ");
             	scanf("%d", &mat);
 				arvore = retira(arvore, mat, t);
 			    printf("\n%s", instrucoes);
@@ -159,7 +159,7 @@ int main()
 TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs) {
 	FILE* fp = fopen(narq, "rt");
 	if (!fp) {
-		printf("O arquivo não existe.\n");
+		printf("O arquivo nao existe.\n");
 		return a;
 	}
 
@@ -170,8 +170,8 @@ TABM* insere_arquivo(char* narq, TABM* a, int t, TC** curs) {
 	int r = fscanf(fp, "%d %f %d %d %d %d %[^\n]%*c", &mat, &cr, &ntran, &chcs, &npu, &cur, &nome);
 
 	while (r == 7) {
-        if ((cur > 3)||(cur < 1)) printf("Currículo %d inválido\n", cur);
-        else if (busca_aluno(a, mat)) printf("Matrícula %d já cadastrada\n", mat);
+        if ((cur > 3)||(cur < 1)) printf("Curriculo %d invalido\n", cur);
+        else if (busca_aluno(a, mat)) printf("Matricula %d ja cadastrada\n", mat);
         else {
             aluno = cria_aluno(mat, chcs, npu, ntran, nome, cr, curs[cur - 1]);
             a = insere(a, aluno, t);
