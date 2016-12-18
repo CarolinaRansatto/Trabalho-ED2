@@ -176,24 +176,32 @@ void imprime(TABM *a, int andar){
 
 // devíamos retornar um int pra saber se as alterações foram bem sucedidas ou não?
 
-void altera_chcs(TABM* a, int mat, int chcs) {
+int altera_chcs(TABM* a, int mat, int chcs) {
     TA* aln = busca_aluno(a, mat);
-    if (aln) aln->chcs = chcs;
+    if (!aln) return 1;
+    aln->chcs = chcs;
+    return 0;
 }
 
-void altera_cr(TABM* a, int mat, float cr) {
+int altera_cr(TABM* a, int mat, float cr) {
     TA* aln = busca_aluno(a, mat);
-    if (aln) aln->cr = cr;
+    if (!aln) return 1;
+    aln->cr = cr;
+    return 0;
 }
 
-void altera_npu(TABM* a, int mat, int npu) {
+int altera_npu(TABM* a, int mat, int npu) {
     TA* aln = busca_aluno(a, mat);
-    if (aln) aln->npu = npu;
+    if (!aln) return 1;
+    aln->npu = npu;
+    return 0;
 }
 
-void altera_ntran(TABM* a, int mat, int ntran) {
+int altera_ntran(TABM* a, int mat, int ntran) {
     TA* aln = busca_aluno(a, mat);
-    if (aln) aln->ntran = ntran;
+    if (!aln) return 1;
+    aln->ntran = ntran;
+    return 0;
 }
 
 TL* ins_ini(TL* l, int info) {
@@ -216,10 +224,11 @@ TABM* remover(TABM* a, int mat, int t){
 	
 	printf("Removendo %d...\n", mat);
 	
-	while ((i < a->nmats) && (mat >= a->mats[i])) i++;
-	//if(mat==a->mats[i]) i++;
+	while ((i < a->nmats) && (mat > a->mats[i])) i++; 
+	//pra achar a mat ou o aluno tem que ser >, não >=
+	//se for == já achamos, não é pra somar mais
 	
-	if((i<a->nmats)&&(a->mats[i]==mat)&&(a->folha)){ //CASO 1
+	if((i<a->nmats)&&(a->mats[i]==mat)&&(a->folha)){ //CASO 1 - funciona
 		printf("\nCASO 1\n");
 		int j;
 		free(a->alunos[i]); 
@@ -231,12 +240,15 @@ TABM* remover(TABM* a, int mat, int t){
 		a->nmats--;
 		return a;
 	}
+	else if (a->folha) return a;
 	
-	TABM* y = a->filhos[i], *z = NULL;
+	int f = i;
+	if(mat==a->mats[i]) ++f; //esse é o índice do filho, se for igual tem que ser um a mais que o da mat
+	TABM* y = a->filhos[f], *z = NULL;
 	if(y->nmats == t-1){  //CASO 3A OU 3B
-		if((i<a->nmats) && (a->filhos[i+1]->nmats >=t)){ // CASO 3A
+		if((f < a->nmats) && (a->filhos[f+1]->nmats >=t)){ // CASO 3A
 			printf("\nCASO 3A: i menor que nmats\n");
-			z = a->filhos[i+1];
+			z = a->filhos[f+1];
 			int j;
 			
 			if(!y->folha){
@@ -246,19 +258,18 @@ TABM* remover(TABM* a, int mat, int t){
 				
 				y->filhos[y->nmats] = z->filhos[0]; //ajusta o ponteiro do filho do novo elemento de y
 				
-				for(j=0; j<z->nmats; j++){ //ajustar lugar dos filhos de z
-					y->filhos[j] = y->filhos[j+1];
+				for(j=0; j<z->nmats-1; j++){ //ajustar lugar dos filhos de z
+					z->filhos[j] = z->filhos[j+1];
+					z->mats[j] = z->mats[j+1];
 				}
 				
 				z->filhos[z->nmats] = NULL;
 			}
 			else{
 				y->mats[y->nmats] = z->mats[0];
+				y->alunos[y->nmats] = z->alunos[0];
 				a->mats[i] = z->mats[1];
 				y->nmats++;
-				
-				y->alunos[y->nmats-1] = z->alunos[0];
-				z->alunos[0] = NULL;
 				
 				for(j=0; j<z->nmats-1; j++){ //rearranjar as informações dos alunos
 					z->mats[j] = z->mats[j+1];
@@ -269,20 +280,20 @@ TABM* remover(TABM* a, int mat, int t){
 			}
 			z->nmats--;
 			
-			a->filhos[i] = remover(a->filhos[i],mat,t);
+			a->filhos[f] = remover(a->filhos[f],mat,t);
 			return a;
 		}
 		
-		if((i > 0) && (!z) && (a->filhos[i-1]->nmats >=t)){ //CASO 3A
-			printf("\nCASO 3A: i igual a nmats\n");
-			z = a->filhos[i-1];
+		else if((f > 0) && (a->filhos[f-1]->nmats >=t)){ //CASO 3A
+			printf("\nCASO 3A: i igual a nmats\n"); //i igual a nmats? wtf?
+			z = a->filhos[f-1];
 			int j;
-			for(j=y->nmats; j>0; j++){ //encaixar lugar da nova mat
+			for(j=y->nmats; j>0; j--){ //encaixar lugar da nova mat
 				y->mats[j] = y->mats[j-1];
 			}
 			
 			if(!y->folha){
-				y->mats[0] = a->mats[i-1];
+				y->mats[0] = a->mats[i-1];// parei aqui - rever i e f
 				a->mats[i-1] = z->mats[z->nmats-1]; 
 				y->nmats++;
 				
@@ -322,7 +333,7 @@ TABM* remover(TABM* a, int mat, int t){
 						z = a->filhos[i-1];
 						int j;
 						for(j=0;j<y->nmats;j++){  //copia os elementos de y
-							z->mats[z->nmats+j] = y->nmats[j];
+							z->mats[z->nmats+j] = y->mats[j];
 							z->alunos[z->nmats+j] = y->alunos[j];
 							
 							y->alunos[j] = NULL; //limpa as referencias
@@ -338,11 +349,11 @@ TABM* remover(TABM* a, int mat, int t){
 						z = a->filhos[i+1];
 						int j;
 						for(j=z->nmats-1;j>=0;j++){  //abre espaço para os elementos em y
-							z->mats[y->nmats+j] = z->nmats[j];
+							z->mats[y->nmats+j] = z->mats[j];
 							z->alunos[y->nmats+j] = z->alunos[j];
 						}
 						for(j=0;j<y->nmats;j++){  //copia os elementos de y
-							z->mats[j] = y->nmats[j];
+							z->mats[j] = y->mats[j];
 							z->alunos[j] = y->alunos[j];
 							
 							y->alunos[j] = NULL; //limpa as referencias
@@ -381,7 +392,7 @@ TABM* remover(TABM* a, int mat, int t){
 	}
 	a->filhos[i] = remover(a->filhos[i], mat, t);
 	return a;
-}	
+}
 
 TABM* retira(TABM* a, int mat, int t){
   if(!a || !busca(a, mat)) return a;
