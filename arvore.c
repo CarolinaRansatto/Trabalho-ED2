@@ -224,7 +224,10 @@ TABM* remover(TABM* a, int mat, int t){
 	
 	printf("Removendo %d...\n", mat);
 	
-	while ((i < a->nmats) && (mat >= a->mats[i])) i++; 
+	while ((i < a->nmats) && (mat > a->mats[i])) i++;
+	if(!a->folha){
+            if(mat == a->mats[i]) i++;
+	}
 	
 	if((i<a->nmats)&&(a->mats[i]==mat)&&(a->folha)){ //CASO 1 - funciona
 		printf("\nCASO 1\n");
@@ -240,9 +243,9 @@ TABM* remover(TABM* a, int mat, int t){
 	}
 	else if (a->folha) return a;
 	
-	if (i == a->nmats) --i;
+	//if (i == a->nmats) --i;
 	int f = i;
-	if(mat==a->mats[i]) ++f; //esse é o índice do filho, se for igual tem que ser um a mais que o da mat
+	//if(mat==a->mats[i]) ++f; //esse é o índice do filho, se for igual tem que ser um a mais que o da mat
 	TABM* y = a->filhos[f], *z = NULL;
 	if(y->nmats == t-1){  //CASO 3A OU 3B
 		if((f < a->nmats) && (a->filhos[f+1]->nmats >=t)){ // CASO 3A
