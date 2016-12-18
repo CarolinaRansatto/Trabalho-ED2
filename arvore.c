@@ -211,6 +211,8 @@ void libera_lista(TL* l) {
 		free(a);
 	}
 }
+
+
 TABM* remover(TABM* a, int mat, int t){
 	if(!a) return NULL;
 	int i = 0;
@@ -316,19 +318,46 @@ TABM* remover(TABM* a, int mat, int t){
 		if(!z){ //CASO 3B
 			if(i < a->nmats && a->filhos[i+1]->nmats == t-1){
 				printf("\nCASO 3B: i menor que nchaves\n");
-				z = a->filhos[i+1];
-				int j;
-				for(j=0; j<t-1; j++){
-					y->mats[(t-1)+j] = z->mats[j];
-					y->nmats++;
-				}
+				
+				
 				if(!y->folha){
-					for(j=0; j<t; j++){
-						y->filhos[t+j] = z->filhos[j];
-					}
+					printf("NOT TODAY SATAN");
 				}
 				else{
-					printf("AFE");
+					if(i==a->nmats){
+						
+					}
+					else{
+						z = a->filhos[i+1];
+						int j;
+						for(j=z->nmats-1;j>=0;j++){  //abre espaço para os elementos em y
+							z->mats[y->nmats+j] = z->nmats[j];
+							z->alunos[y->nmats+j] = z->alunos[j];
+						}
+						for(j=0;j<y->nmats;j++){  //copia os elementos de y
+							z->mats[j] = y->nmats[j];
+							z->alunos[j] = y->alunos[j];
+							
+							y->alunos[j] = NULL; //limpa as referencias
+						}
+						
+						libera(y);
+						
+						/*
+						for(j=0; j<z->nmats;j++){ //junta os irmãos
+							y->mats[(t-1)+j] = z->mats[j];
+							y->alunos[(t-1)+j] = z->alunos[j];
+						}
+						
+						//mata a chave da junção
+						for(j=i; j<a->nmats;j++){
+							a->mats[j] = a->mats[j+1];
+						}
+						
+						//mata a relação de alunos duplicados
+						*/
+						
+					}
 				}
 				 
 			}
