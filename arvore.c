@@ -211,7 +211,6 @@ void libera_lista(TL* l) {
 		free(a);
 	}
 }
-
 TABM* remover(TABM* a, int mat, int t){
 	if(!a) return NULL;
 	int i = 0;
@@ -239,37 +238,38 @@ TABM* remover(TABM* a, int mat, int t){
 		if((i<a->nmats) && (a->filhos[i+1]->nmats >=t)){ // CASO 3A
 			printf("\nCASO 3A: i menor que nmats\n");
 			z = a->filhos[i+1];
-			y->mats[t-1] = z->mats[0]; //da a y uma mat de z
-			if(y->folha){ //opcional
-				y->filhos[y->nmats] = NULL;
-			}
-			y->nmats++;
-			
-			a->mats[i] = z->mats[1]; //da a arvore a proxima mat de z
-			
 			int j;
-			for(j=0; j<z->nmats-1; j++){ //ajustar mats de z
-				z->mats[j] = z->mats[j+1];
-			}
 			
 			if(!y->folha){
-				y->filhos[y->nmats] = z->filhos[0];  //envia ponteiro menor de z para o novo elemento de y
+				y->mats[y->nmats] = a->mats[i];
+				a->mats[i] = z->mats[0]; 
+				y->nmats++;
 				
-				for(j=0; j<z->nmats;j++){ //ajustar filhos de z
-					z->filhos[j] = z->filhos[j+1];
+				y->filhos[y->nmats] = z->filhos[0]; //ajusta o ponteiro do filho do novo elemento de y
+				
+				for(j=0; j<z->nmats; j++){ //ajustar lugar dos filhos de z
+					y->filhos[j] = y->filhos[j+1];
 				}
-				z->filhos[j] = NULL;
+				
+				z->filhos[z->nmats] = NULL;
 			}
 			else{
-				y->alunos[t-1] = z->alunos[0]; // ajusta o ponteiro do aluno que saiu de z e foi para y
+				y->mats[y->nmats] = z->mats[0];
+				a->mats[i] = z->mats[1];
+				y->nmats++;
 				
-				for(j=0; j<z->nmats-1;j++){ //ajustar alunos de z
-					z->alunos[j] = z->alunos[j+1];
-				}  
+				y->alunos[y->nmats-1] = z->alunos[0];
+				z->alunos[0] = NULL;
+				
+				for(j=0; j<z->nmats-1; j++){ //rearranjar as informações dos alunos
+					z->mats[j] = z->mats[j+1];
+					z->alunos[j] = y->alunos[j+1];
+				}
+				
 				z->alunos[z->nmats-1] = NULL;
 			}
-			
 			z->nmats--;
+			
 			a->filhos[i] = remover(a->filhos[i],mat,t);
 			return a;
 		}
@@ -282,30 +282,33 @@ TABM* remover(TABM* a, int mat, int t){
 				y->mats[j] = y->mats[j-1];
 			}
 			
-			y->mats[0] = z->mats[z->nmats-1];
-			a->mats[i] = y->mats[0];
-			
-			if(y->folha) y->filhos[y->nmats+1] = NULL; //opcional
-			y->nmats++;
-			
 			if(!y->folha){
+				y->mats[0] = a->mats[i-1];
+				a->mats[i-1] = z->mats[z->nmats-1]; 
+				y->nmats++;
+				
 				for(j=y->nmats; j>0; j--){ //encaixar lugar dos filhos da nova chave
 					y->filhos[j] = y->filhos[j-1];
 				}
 				
 				y->filhos[0] = z->filhos[z->nmats]; //ajusta o ponteiro do filho do novo elemento de y
 				z->filhos[z->nmats] = NULL;
+				
 			}
 			else{
-				for(j=y->nmats-1; j>0; j--){ //rearranjar informações dos alunos
+				y->mats[0] = z->mats[z->nmats-1];
+				a->mats[i-1] = z->mats[z->nmats-1];
+				y->nmats++;
+				
+				for(j=y->nmats-1; j>0; j--){ //rearranjar as informações dos alunos
 					y->alunos[j] = y->alunos[j-1];
 				}
 				
-				y->alunos[0] = z->alunos[z->nmats-1]; //ajusta o ponteiro do aluno do novo elemento de y
+				y->alunos[0] = z->alunos[z->nmats-1]; //ajusta a informações de aluno do novo elemento de y
 				z->alunos[z->nmats-1] = NULL;
 			}
-			
 			z->nmats--;
+			
 			a->filhos[i] = remover(a->filhos[i],mat,t);
 			return a;			
 		}
