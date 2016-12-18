@@ -7,12 +7,8 @@
 554 3.900000 3 2993 8 3 Marcelo Zormann
 1340 9.300000 4 1517 7 2 Jordan Correia
 64 1.600000 0 1553 11 3 Jan-Lennard Struff
-13 5.200000 2 1021 12 3 Nick Kyrgios
-18 7.300000 3 3523 11 2 Richard Gasquet
-19 3.500000 1 1517 10 1 John Isner
-30 5.700000 0 888 6 2 Pablo Carreno Busta
-45 4.600000 2 208 9 3 Nicolas Almagro
-47 5.400000 4 445 6 3 Benoit Paire
-1934 4.900000 2 1535 9 3 Eduardo Ribeiro
-1982 6.100000 1 987 9 2 Luis Britto
-2043 2.300000 4 1457 8 2 Eduardo Russi Assumpcao
+
+
+
+
+REMOVER 64 na primeira remoção

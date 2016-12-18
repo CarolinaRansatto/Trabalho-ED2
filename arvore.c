@@ -206,6 +206,7 @@ int altera_ntran(TABM* a, int mat, int ntran) {
 
 TL* ins_ini(TL* l, int info) {
 	TL* novo = (TL*) malloc(sizeof(TL));
+	novo->info = info;
 	novo->prox = l;
 	return novo;
 }
@@ -470,7 +471,7 @@ TABM* retira_formandos(TABM* a, int t) {
 		int i;
 		for (i = 0; i < b->nmats; i++)
 			if (b->alunos[i]->chcs >= b->alunos[i]->cur->cht) {
-				ins_ini(lista, b->alunos[i]->mat);
+				lista = ins_ini(lista, b->alunos[i]->mat);
 				printf(" %d", b->alunos[i]->mat);
 			}
 		b = b->prox;
@@ -479,7 +480,7 @@ TABM* retira_formandos(TABM* a, int t) {
 
 	TL* l = lista;
 	while (l) {
-		//a = retira(a, l->info, t);
+		a = retira(a, l->info, t);
 		l = l->prox;
 	}
 	libera_lista(lista);
@@ -510,7 +511,7 @@ TABM* retira_alunos_tnc(TABM* a, int t){
                //chegou ao TNC(tempo nominal do curso)
                if(chcs < (cht/2)){
                     //nao atingiu 50% do cht
-                    ins_ini(lista, b->alunos[i]->mat);
+                    lista = ins_ini(lista, b->alunos[i]->mat);
                     printf("%d ", b->alunos[i]->mat);
                }
             }
@@ -523,7 +524,7 @@ TABM* retira_alunos_tnc(TABM* a, int t){
     printf("\n");
 	TL* l = lista;
 	while (l) {
-		//a = retira(a, l->info, t);
+		a = retira(a, l->info, t);
 		l = l->prox;
 	}
     libera_lista(lista);
@@ -550,7 +551,7 @@ TABM* retira_alunos_ntotper(TABM* a, int t){
             ntotper = b->alunos[i]->cur->ntotper;
             if((npu-ntran)> ntotper ){
                //cursou mais períodos que o permitido
-                ins_ini(lista, b->alunos[i]->mat);
+                lista = ins_ini(lista, b->alunos[i]->mat);
                 printf("%d ", b->alunos[i]->mat);
             }
         }
@@ -562,7 +563,7 @@ TABM* retira_alunos_ntotper(TABM* a, int t){
     printf("\n");
 	TL* l = lista;
 	while (l) {
-		//a = retira(a, l->info, t);
+		a = retira(a, l->info, t);
 		l = l->prox;
 	}
     libera_lista(lista);
