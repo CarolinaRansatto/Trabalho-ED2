@@ -225,8 +225,6 @@ TABM* remover(TABM* a, int mat, int t){
 	printf("Removendo %d...\n", mat);
 	
 	while ((i < a->nmats) && (mat > a->mats[i])) i++; 
-	//pra achar a mat ou o aluno tem que ser >, não >=
-	//se for == já achamos, não é pra somar mais
 	
 	if((i<a->nmats)&&(a->mats[i]==mat)&&(a->folha)){ //CASO 1 - funciona
 		printf("\nCASO 1\n");
@@ -242,6 +240,7 @@ TABM* remover(TABM* a, int mat, int t){
 	}
 	else if (a->folha) return a;
 	
+	if (i == a->nmats) --i;
 	int f = i;
 	if(mat==a->mats[i]) ++f; //esse é o índice do filho, se for igual tem que ser um a mais que o da mat
 	TABM* y = a->filhos[f], *z = NULL;
@@ -284,8 +283,8 @@ TABM* remover(TABM* a, int mat, int t){
 			return a;
 		}
 		
-		else if((f > 0) && (a->filhos[f-1]->nmats >=t)){ //CASO 3A
-			printf("\nCASO 3A: i igual a nmats\n"); //i igual a nmats? wtf?
+		if((f > 0) && (a->filhos[f-1]->nmats >=t)){ //CASO 3A
+			printf("\nCASO 3A: i igual a nmats\n"); //não mais
 			z = a->filhos[f-1];
 			int j;
 			for(j=y->nmats; j>0; j--){ //encaixar lugar da nova mat
@@ -293,8 +292,8 @@ TABM* remover(TABM* a, int mat, int t){
 			}
 			
 			if(!y->folha){
-				y->mats[0] = a->mats[i-1];// parei aqui - rever i e f
-				a->mats[i-1] = z->mats[z->nmats-1]; 
+				y->mats[0] = a->mats[f-1]; //pega a mat que está no meio dos dois nós
+				a->mats[f-1] = z->mats[z->nmats-1]; 
 				y->nmats++;
 				
 				for(j=y->nmats; j>0; j--){ //encaixar lugar dos filhos da nova chave
@@ -307,7 +306,7 @@ TABM* remover(TABM* a, int mat, int t){
 			}
 			else{
 				y->mats[0] = z->mats[z->nmats-1];
-				a->mats[i-1] = z->mats[z->nmats-1];
+				a->mats[f-1] = z->mats[z->nmats-1];
 				y->nmats++;
 				
 				for(j=y->nmats-1; j>0; j--){ //rearranjar as informações dos alunos
@@ -319,78 +318,111 @@ TABM* remover(TABM* a, int mat, int t){
 			}
 			z->nmats--;
 			
-			a->filhos[i] = remover(a->filhos[i],mat,t);
+			a->filhos[f] = remover(a->filhos[f],mat,t);
 			return a;			
 		}
 		
-		if(!z){ //CASO 3B  TEM Q MEXER TA MTO ERRADO
-			if(i < a->nmats && a->filhos[i+1]->nmats == t-1){
-				if(!y->folha){
-					printf("NOT TODAY SATAN");
-				}
-				else{
-					if(i==a->nmats){
-						z = a->filhos[i-1];
-						int j;
-						for(j=0;j<y->nmats;j++){  //copia os elementos de y
-							z->mats[z->nmats+j] = y->mats[j];
-							z->alunos[z->nmats+j] = y->alunos[j];
-							
-							y->alunos[j] = NULL; //limpa as referencias
-						}
-						
-						libera(y);
-						a->filhos[i-1] = NULL;
-						a->nmats--;
-					}
-					else{
-						printf("\nCASO 3B: i menor que nchaves\n");
-						
-						z = a->filhos[i+1];
-						int j;
-						for(j=z->nmats-1;j>=0;j++){  //abre espaço para os elementos em y
-							z->mats[y->nmats+j] = z->mats[j];
-							z->alunos[y->nmats+j] = z->alunos[j];
-						}
-						for(j=0;j<y->nmats;j++){  //copia os elementos de y
-							z->mats[j] = y->mats[j];
-							z->alunos[j] = y->alunos[j];
-							
-							y->alunos[j] = NULL; //limpa as referencias
-						}
-						
-						libera(y);
-						
-						
-						for(j=0;j<a->nmats;j++){
-							a->mats[j] = a->mats[j+1];
-							a->filhos[j] = a->filhos[j+1];
-						}
-						a->nmats--;
-						/*
-						for(j=0; j<z->nmats;j++){ //junta os irmãos
-							y->mats[(t-1)+j] = z->mats[j];
-							y->alunos[(t-1)+j] = z->alunos[j];
-						}
-						
-						//mata a chave da junção
-						for(j=i; j<a->nmats;j++){
-							a->mats[j] = a->mats[j+1];
-						}
-						
-						//mata a relação de alunos duplicados
-						*/
-						
-						a = remover(a,mat,t);
-						return a;
-					}
+		//CASO 3B  TEM Q MEXER TA MTO ERRADO
+		if(f < a->nmats) {
+			printf("CASO 3B\n");
+			if(!y->folha){
+				printf("no\n");
+				z = a->filhos[f + 1];
+				int j;
+				y->mats[y->nmats] = a->mats[i];
+				y->nmats++;
+				
+				for (j = 0; j < z->nmats; j++) { //copia os elementos de z
+					y->mats[y->nmats + j] = z->mats[j];
+					y->filhos[y->nmats + j] = z->filhos[j];
 				}
 				
+				y->nmats += z->nmats;
+				y->filhos[y->nmats] = z->filhos[z->nmats];
+				libera(z);
 				
+				for(j = f + 1; j < a->nmats; j++){
+					a->mats[j - 1] = a->mats[j];
+					a->filhos[j] = a->filhos[j + 1];
+				}
+				
+				a->nmats--;
+				a->filhos[f] = remover(a->filhos[f], mat, t);
+			}
+			else{
+				printf("folha\n");
+				z = a->filhos[f + 1];
+				int j;
+				for (j = 0; j < z->nmats; j++) { //copia os elementos de z
+					y->mats[y->nmats + j] = z->mats[j];
+					y->alunos[y->nmats + j] = z->alunos[j];
+				}
+				
+				y->nmats += z->nmats;
+				y->prox = z->prox;
+				if (y->prox) y->prox->ant = y;
+				libera(z);
+				
+				for(j = f + 1; j < a->nmats; j++){
+					a->mats[j - 1] = a->mats[j];
+					a->filhos[j] = a->filhos[j + 1];
+				}
+				
+				a->nmats--;
+				a->filhos[f] = remover(a->filhos[f], mat, t);
+			}
+		}
+		else { // CASO 3B se y for o último filho
+			printf("CASO 3B\n");
+			if (!y->folha) {
+				printf("no\n");
+				z = a->filhos[f - 1];
+				int j;
+				z->mats[z->nmats] = a->mats[f - 1];
+				z->nmats++;
+				
+				for (j = 0; j < z->nmats; j++) { //copia os elementos de y
+					z->mats[z->nmats + j] = y->mats[j];
+					z->filhos[z->nmats + j] = y->filhos[j];
+				}
+				
+				z->nmats += y->nmats;
+				z->filhos[z->nmats] = y->filhos[y->nmats];
+				libera(y);
+				
+				for(j = f; j < a->nmats; j++){
+					a->mats[j - 1] = a->mats[j];
+					a->filhos[j] = a->filhos[j + 1];
+				}
+				
+				a->nmats--;
+				a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
+			}
+			else {
+				printf("folha\n");
+				z = a->filhos[f - 1];
+				int j;
+				for (j = 0; j < z->nmats; j++) { //copia os elementos de y
+					z->mats[z->nmats + j] = y->mats[j];
+					z->alunos[z->nmats + j] = y->alunos[j];
+				}
+				
+				z->nmats += y->nmats;
+				z->prox = y->prox;
+				if (z->prox) z->prox->ant = z;
+				libera(y);
+				
+				for(j = f; j < a->nmats; j++){
+					a->mats[j - 1] = a->mats[j];
+					a->filhos[j] = a->filhos[j + 1];
+				}
+				
+				a->nmats--;
+				a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
 			}
 		}
 	}
-	a->filhos[i] = remover(a->filhos[i], mat, t);
+	a->filhos[f] = remover(a->filhos[f], mat, t);
 	return a;
 }
 

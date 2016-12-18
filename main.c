@@ -14,7 +14,7 @@ int main()
 	    scanf("%d", &t);
 	}
 	
-	char* instrucoes = " 0: Inserir aluno manualmente\n 1: Inserir alunos de arquivo\n 2: Buscar aluno\n 3: Remover aluno\n 4: Alterar CR\n 5: Alterar carga horaria\n 6: Alterar número de períodos na universidade\n 7: Alterar número de trancamentos\n 8: Imprimir arvore\n 9: Remover formandos\n10: Remover alunos que violem a regra dos 50%\n11: Remover alunos que violem a regra de tempo maximo\n-1: Sair\n";
+	char* instrucoes = " 0: Inserir alunos manualmente\n 1: Inserir alunos de arquivo\n 2: Buscar aluno\n 3: Remover aluno\n 4: Alterar CR\n 5: Alterar carga horaria\n 6: Alterar número de períodos na universidade\n 7: Alterar número de trancamentos\n 8: Imprimir arvore\n 9: Remover formandos\n10: Remover alunos que violem a regra dos 50%\n11: Remover alunos que violem a regra de tempo maximo\n-1: Sair\n";
 
     printf("%s", instrucoes);
     scanf("%d",&opcao);
