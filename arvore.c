@@ -251,7 +251,7 @@ TABM* remover(TABM* a, int mat, int t){
 
 	//if (i == a->nmats) --i;
 	int f = i;
-	//if(mat==a->mats[i]) ++f; //esse é o índice do filho, se for igual tem que ser um a mais que o da mat
+	//if(mat==a->mats[i]) ++f; //esse Ã© o Ã­ndice do filho, se for igual tem que ser um a mais que o da mat
 	TABM* y = a->filhos[f], *z = NULL;
 	if(y->nmats == t-1){  //CASO 3A OU 3B
 		if((f < a->nmats) && (a->filhos[f+1]->nmats >=t)){ // CASO 3A
@@ -271,7 +271,7 @@ TABM* remover(TABM* a, int mat, int t){
 					z->mats[j] = z->mats[j+1];
 				}
 
-				z->filhos[j] = z->filhos[j+1]; //o numero de filhos é o numero de mats + 1
+				z->filhos[j] = z->filhos[j+1]; //o numero de filhos Ã© o numero de mats + 1
 
 				z->filhos[z->nmats] = NULL;
 			}
@@ -281,7 +281,7 @@ TABM* remover(TABM* a, int mat, int t){
 				a->mats[i] = z->mats[1];
 				y->nmats++;
 
-				for(j=0; j<z->nmats-1; j++){ //rearranjar as informações dos alunos
+				for(j=0; j<z->nmats-1; j++){ //rearranjar as informaÃ§Ãµes dos alunos
 					z->mats[j] = z->mats[j+1];
 					z->alunos[j] = y->alunos[j+1];
 				}
@@ -295,7 +295,7 @@ TABM* remover(TABM* a, int mat, int t){
 		}
 
 		if((f > 0) && (a->filhos[f-1]->nmats >=t)){ //CASO 3A
-			printf("\nCASO 3A: i igual a nmats\n"); //não mais
+			printf("\nCASO 3A: i igual a nmats\n"); //nÃ£o mais
 			z = a->filhos[f-1];
 			int j;
 			for(j=y->nmats; j>0; j--){ //encaixar lugar da nova mat
@@ -303,7 +303,7 @@ TABM* remover(TABM* a, int mat, int t){
 			}
 
 			if(!y->folha){
-				y->mats[0] = a->mats[f-1]; //pega a mat que está no meio dos dois nós
+				y->mats[0] = a->mats[f-1]; //pega a mat que estÃ¡ no meio dos dois nÃ³s
 				a->mats[f-1] = z->mats[z->nmats-1];
 				y->nmats++;
 
@@ -320,11 +320,11 @@ TABM* remover(TABM* a, int mat, int t){
 				a->mats[f-1] = z->mats[z->nmats-1];
 				y->nmats++;
 
-				for(j=y->nmats-1; j>0; j--){ //rearranjar as informações dos alunos
+				for(j=y->nmats-1; j>0; j--){ //rearranjar as informaÃ§Ãµes dos alunos
 					y->alunos[j] = y->alunos[j-1];
 				}
 
-				y->alunos[0] = z->alunos[z->nmats-1]; //ajusta a informações de aluno do novo elemento de y
+				y->alunos[0] = z->alunos[z->nmats-1]; //ajusta a informaÃ§Ãµes de aluno do novo elemento de y
 				z->alunos[z->nmats-1] = NULL;
 			}
 			z->nmats--;
@@ -332,162 +332,134 @@ TABM* remover(TABM* a, int mat, int t){
 			a->filhos[f] = remover(a->filhos[f],mat,t);
 			return a;
 		}
-
-		if(f < a->nmats) {
-
-            //TA *aluno;
-
-			printf("CASO 3B i menor que nmats...\n");
-			if(!y->folha){
-				printf("no\n");
-
-				z = a->filhos[f + 1];
-				int j;
-				y->mats[y->nmats] = a->mats[f];
-				y->nmats++;
-
-				for (j = 0; j < z->nmats; j++) { //copia os elementos de z
-					y->mats[y->nmats + j] = z->mats[j];
-					y->filhos[y->nmats + j] = z->filhos[j];
+		
+		if(!z){ //CASO 3B
+			
+			
+			if((f<a->nmats) && a->filhos[f+1]->nmats == t-1){
+				printf("\nCASO 3B: i menor que nchaves\n");
+				z= a->filhos[f+1];
+				
+				if(!y->folha){
+					y->mats[y->nmats] = a->mats[f];
+					y->nmats++;
 				}
-
+				
+				int j;
+				for(j=0; j<z->nmats;j++){
+					y->mats[y->nmats + j] = z->mats[j];
+					//y->nmats++;
+				}
+				
+				if(!y->folha){
+					for(j=0; j<z->nmats+1; j++){
+						y->filhos[y->nmats + j] = z->filhos[j];
+						z->filhos[j] = NULL;
+					}
+				}
+				else{
+					for(j=0; j<z->nmats; j++){
+						y->alunos[y->nmats + j] = z->alunos[j];
+					}
+					
+					y->prox = z->prox;
+					if(y->prox) y->prox->ant = y;
+					
+					z->alunos[j] = NULL;
+					z->prox = NULL;
+					z->ant = NULL;
+				
+				}
+				
 				y->nmats += z->nmats;
-				y->filhos[y->nmats] = z->filhos[z->nmats];
-
-				// ATE AQUI TA CERTO
-
+				//O PROBLEMA ESTA AQUI
 				/*
-				printf("AAAAAAAAAA");
-                aluno = busca_aluno(a, 508);
-                if(aluno) printf("%d",aluno->mat);
-                printf("\n");
-
-                int k;
-                for(j=0; j<=y->nmats;j++){
-                        for(k=0; k<y->filhos[j]->nmats;k++){
-                            printf("%d ",y->filhos[j]->mats[k]);
-                        }
-                        printf("AA");
-                }
-                printf("\n");
-                for(j=0; j<=z->nmats;j++) printf("%d ",z->mats[j]);
-                */
-
-				for(j=0; j<=z->nmats; j++){ //desvincula z de seus filhos
-					z->filhos[j] = NULL;
-				}
-
-				libera(z);                  //libera z
-
-                //o erro esta acima
-
-			}
-			else{
-				printf("folha\n");
-				z = a->filhos[f + 1];
-				int j;
-				for (j = 0; j < z->nmats; j++) { //copia os elementos de z
-					y->mats[y->nmats + j] = z->mats[j];
-					y->alunos[y->nmats + j] = z->alunos[j];
-				}
-
-				y->nmats += z->nmats;
-				for(j=0; j<y->nmats+1; j++) y->filhos[j] = NULL; //opcional (p/ ter certeza q os filhos de folha sao NULL)
-				y->prox = z->prox;
-				if (y->prox) y->prox->ant = y;
-
-				for(j=0; j<z->nmats; j++) z->alunos[j] = NULL;
+				for(j=0; j<z->nmats;j++){
+					printf("AAA");
+					if(z->filhos[j]) printf("%d",z->filhos[j]->mats[0]);
+					if(z->alunos[j]) printf("%d",z->alunos[j]->mat);
+				}*/
 				libera(z);
-			}
-
-
-				printf("NA HORA DE GANHAR MADEIRADA 5");
-                TA *aluno2 = busca_aluno(a, 508);
-                if(aluno2) printf("%d",aluno2->mat);
-
-			if(a->nmats == 1){ //so se for a raiz da arvore original
-				a->filhos[0] = NULL;
-				a->filhos[1] = NULL;
-				libera(a);
-				a = y;
-			}
-			else{
-                /*
-				int j;
-				for(j = f; j< a->nmats; j++){
-					a->mats[j] = a->mats[j+1];
-					a->filhos[j+1] = a->filhos[j+2];
+				//printf("C");
+				
+				
+				if(a->nmats == 1){ //so acontece se for a raiz original
+					a->filhos[0] = NULL;
+					a->filhos[1] = NULL;
+					libera(a);
+					
+					a = y;
 				}
-				a->filhos[j] = NULL; // num de filhos = num de mats + 1
-				*/
-				a->filhos[a->nmats] = NULL;
-				a->nmats--;
+				else{
+					for(j=f; j< a->nmats-1; j++){
+						a->mats[j] = a->mats[j+1];
+						a->filhos[j+1] = a->filhos[j+2];
+					}
+					a->nmats--;
+				}
+				a = remover(a,mat,t);
+				return a;
 			}
-
-			//a->filhos[f] = remover(a->filhos[f], mat, t);
-			a = remover(a, mat, t);
-			return a;
-		}
-		else { // CASO 3B se y for o último filho
-			printf("CASO 3B\n");
-			if (!y->folha) {
-				printf("no\n");
-				z = a->filhos[f - 1];
+			
+	      	if((f > 0) && (a->filhos[f-1]->nmats == t-1)){ 
+		        printf("\nCASO 3B: i igual a nchaves\n");
+		        z = a->filhos[f-1];
+		        
+		        if(!y->folha){
+			        if(f == a->nmats){
+			        	z->mats[z->nmats] = a->mats[f-1];
+					}
+					else{
+						z->mats[z->nmats] = a->mats[f];
+					}
+					z->nmats++;
+				}
+				
 				int j;
-				z->mats[z->nmats] = a->mats[f - 1];
-				z->nmats++;
-
-				for (j = 0; j < z->nmats; j++) { //copia os elementos de y
+				for(j=0; j < y->nmats; j++){
 					z->mats[z->nmats + j] = y->mats[j];
-					z->filhos[z->nmats + j] = y->filhos[j];
+					//z->nmats++; 
 				}
-
-				z->nmats += y->nmats;
-				z->filhos[z->nmats] = y->filhos[y->nmats]; //num filhos = nmats + 1
-
-				for(j=0; j<y->nmats+1; j++) y->filhos[j] = NULL;
-				libera(y);
-			}
-			else {
-				printf("folha\n");
-				z = a->filhos[f - 1];
-				int j;
-				for (j = 0; j < z->nmats; j++) { //copia os elementos de y
-					z->mats[z->nmats + j] = y->mats[j];
-					z->alunos[z->nmats + j] = y->alunos[j];
+				
+				if(!y->folha){
+					for(j=0; j<y->nmats; j++){
+		            	z->filhos[z->nmats + j] = y->filhos[j];
+		            	y->filhos[j] = NULL;
+		          	}		
 				}
-
-				z->nmats += y->nmats;
-				z->prox = y->prox;
-				if (z->prox) z->prox->ant = z;
-
-				for(j=0; j<y->nmats; j++) y->alunos[j] = NULL;
+		        else{
+		        	for(j=0; j<y->nmats; j++){
+						z->alunos[z->nmats + j] = y->alunos[j];
+					}
+					z->prox = y->prox;
+					if(z->prox)z->prox->ant = z;
+					
+					y->alunos[j] = NULL;
+					y->prox = NULL;
+					y->ant = NULL;
+				}
+		        
+		        z->nmats += y->nmats;
 				libera(y);
-			}
-
-			if(a->nmats==1){   //so acontece se for a raiz original da arvore
-                a->filhos[0] = NULL;
-                a->filhos[1] = NULL;
-                libera(a);
-                a = z;
-			}
-			else{
-                /*
-                int j;
-                for(j = f-1; j<a->nmats; j++){
-                    a->mats[j] = a->mats[j+1];
-                    a->filhos[j+1] = a->filhos[j+2];
-                }
-                a->filhos[a->nmats] = NULL;
-                */
-                a->filhos[a->nmats] = NULL;
-                a->nmats--;
-			}
-
-            //a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
-            a = remover(a, mat, t);
-            return a;
-		}
+				
+		        if(a->nmats == 1){ //so se for a raiz original
+		        	a->filhos[0] = NULL;
+					a->filhos[1] = NULL;
+					libera(a);
+					
+					a = y;
+				}
+				else{
+					a->nmats--;	
+					a->filhos[f-1] = z;
+				}
+		        
+		        //a->filhos[f-1] = z;
+		        
+				a = remover(a, mat, t);
+		        return a;
+		    }
+	    }
 	}
 	a->filhos[f] = remover(a->filhos[f], mat, t);
 	return a;
