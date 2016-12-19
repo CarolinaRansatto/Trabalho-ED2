@@ -1,14 +1,9 @@
 2 6.800000 0 2008 15 1 Novak Djokovic
 3 8.300000 2 121 1 2 Stan Wawrinka
 12 9.000000 2 2687 1 1 Jo-Wilfried Tsonga
-60 6.400000 1 2057 13 1 Guido Pella
 100 2.200000 1 1663 11 1 Yoshihito Nishioka
 508 5.800000 3 2577 13 1 Bruno Santanna
 554 3.900000 3 2993 8 3 Marcelo Zormann
+600 9.500000 4 1527 4 1 Andre Correia
 1340 9.300000 4 1517 7 2 Jordan Correia
 64 1.600000 0 1553 11 3 Jan-Lennard Struff
-
-
-
-
-REMOVER 64 na primeira remoção

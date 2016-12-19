@@ -92,6 +92,9 @@ TABM* insere_nao_completo(TABM* a, TA* aln, int t) {
         a->mats[i + 1] = aln->mat;
         a->alunos[i + 1] = aln;
         ++a->nmats;
+
+        //a->filhos = NULL;
+
     }
     else {
         while ((i >= 0) && (aln->mat < a->mats[i])) i--;
@@ -331,12 +334,16 @@ TABM* remover(TABM* a, int mat, int t){
 		}
 
 		if(f < a->nmats) {
+
+            //TA *aluno;
+
 			printf("CASO 3B i menor que nmats...\n");
 			if(!y->folha){
 				printf("no\n");
+
 				z = a->filhos[f + 1];
 				int j;
-				y->mats[y->nmats] = a->mats[i];
+				y->mats[y->nmats] = a->mats[f];
 				y->nmats++;
 
 				for (j = 0; j < z->nmats; j++) { //copia os elementos de z
@@ -347,10 +354,32 @@ TABM* remover(TABM* a, int mat, int t){
 				y->nmats += z->nmats;
 				y->filhos[y->nmats] = z->filhos[z->nmats];
 
+				// ATE AQUI TA CERTO
+
+				/*
+				printf("AAAAAAAAAA");
+                aluno = busca_aluno(a, 508);
+                if(aluno) printf("%d",aluno->mat);
+                printf("\n");
+
+                int k;
+                for(j=0; j<=y->nmats;j++){
+                        for(k=0; k<y->filhos[j]->nmats;k++){
+                            printf("%d ",y->filhos[j]->mats[k]);
+                        }
+                        printf("AA");
+                }
+                printf("\n");
+                for(j=0; j<=z->nmats;j++) printf("%d ",z->mats[j]);
+                */
+
 				for(j=0; j<=z->nmats; j++){ //desvincula z de seus filhos
 					z->filhos[j] = NULL;
 				}
+
 				libera(z);                  //libera z
+
+                //o erro esta acima
 
 			}
 			else{
@@ -371,6 +400,11 @@ TABM* remover(TABM* a, int mat, int t){
 				libera(z);
 			}
 
+
+				printf("NA HORA DE GANHAR MADEIRADA 5");
+                TA *aluno2 = busca_aluno(a, 508);
+                if(aluno2) printf("%d",aluno2->mat);
+
 			if(a->nmats == 1){ //so se for a raiz da arvore original
 				a->filhos[0] = NULL;
 				a->filhos[1] = NULL;
@@ -378,17 +412,21 @@ TABM* remover(TABM* a, int mat, int t){
 				a = y;
 			}
 			else{
-                int j;
-				for(j = f; j< a->nmats-1; j++){
+                /*
+				int j;
+				for(j = f; j< a->nmats; j++){
 					a->mats[j] = a->mats[j+1];
 					a->filhos[j+1] = a->filhos[j+2];
 				}
 				a->filhos[j] = NULL; // num de filhos = num de mats + 1
+				*/
+				a->filhos[a->nmats] = NULL;
 				a->nmats--;
 			}
 
 			//a->filhos[f] = remover(a->filhos[f], mat, t);
 			a = remover(a, mat, t);
+			return a;
 		}
 		else { // CASO 3B se y for o último filho
 			printf("CASO 3B\n");
@@ -434,17 +472,21 @@ TABM* remover(TABM* a, int mat, int t){
                 a = z;
 			}
 			else{
+                /*
                 int j;
-                for(j = f-1; j<a->nmats-1; j++){
+                for(j = f-1; j<a->nmats; j++){
                     a->mats[j] = a->mats[j+1];
                     a->filhos[j+1] = a->filhos[j+2];
                 }
+                a->filhos[a->nmats] = NULL;
+                */
                 a->filhos[a->nmats] = NULL;
                 a->nmats--;
 			}
 
             //a->filhos[f - 1] = remover(a->filhos[f - 1], mat, t);
             a = remover(a, mat, t);
+            return a;
 		}
 	}
 	a->filhos[f] = remover(a->filhos[f], mat, t);
