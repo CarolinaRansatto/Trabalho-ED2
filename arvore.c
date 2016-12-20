@@ -367,7 +367,7 @@ TABM* remover(TABM* a, int mat, int t){
 					y->prox = z->prox;
 					if(y->prox) y->prox->ant = y;
 
-					\\z->alunos[j] = NULL;
+					//z->alunos[j] = NULL;
 					z->prox = NULL;
 					z->ant = NULL;
 
@@ -438,7 +438,7 @@ TABM* remover(TABM* a, int mat, int t){
 					z->prox = y->prox;
 					if(z->prox)z->prox->ant = z;
 
-					\\y->alunos[j] = NULL;
+					//y->alunos[j] = NULL;
 					y->prox = NULL;
 					y->ant = NULL;
 				}
