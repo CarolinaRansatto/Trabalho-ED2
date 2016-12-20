@@ -332,45 +332,47 @@ TABM* remover(TABM* a, int mat, int t){
 			a->filhos[f] = remover(a->filhos[f],mat,t);
 			return a;
 		}
-		
+
 		if(!z){ //CASO 3B
-			
-			
+
 			if((f<a->nmats) && a->filhos[f+1]->nmats == t-1){
-				printf("\nCASO 3B: i menor que nchaves\n");
+				printf("\nCASO 3B: i menor que nmats\n");
 				z= a->filhos[f+1];
-				
+
 				if(!y->folha){
 					y->mats[y->nmats] = a->mats[f];
 					y->nmats++;
 				}
-				
+
 				int j;
 				for(j=0; j<z->nmats;j++){
 					y->mats[y->nmats + j] = z->mats[j];
 					//y->nmats++;
 				}
-				
+
 				if(!y->folha){
 					for(j=0; j<z->nmats+1; j++){
 						y->filhos[y->nmats + j] = z->filhos[j];
 						z->filhos[j] = NULL;
 					}
+
+					//a->filhos[f+1] = NULL;
 				}
 				else{
 					for(j=0; j<z->nmats; j++){
 						y->alunos[y->nmats + j] = z->alunos[j];
+						z->alunos[j] = NULL;
 					}
-					
+
 					y->prox = z->prox;
 					if(y->prox) y->prox->ant = y;
-					
-					z->alunos[j] = NULL;
+
+					\\z->alunos[j] = NULL;
 					z->prox = NULL;
 					z->ant = NULL;
-				
+
 				}
-				
+
 				y->nmats += z->nmats;
 				//O PROBLEMA ESTA AQUI
 				/*
@@ -379,15 +381,16 @@ TABM* remover(TABM* a, int mat, int t){
 					if(z->filhos[j]) printf("%d",z->filhos[j]->mats[0]);
 					if(z->alunos[j]) printf("%d",z->alunos[j]->mat);
 				}*/
+
 				libera(z);
 				//printf("C");
-				
-				
+
+
 				if(a->nmats == 1){ //so acontece se for a raiz original
 					a->filhos[0] = NULL;
 					a->filhos[1] = NULL;
 					libera(a);
-					
+
 					a = y;
 				}
 				else{
@@ -400,11 +403,11 @@ TABM* remover(TABM* a, int mat, int t){
 				a = remover(a,mat,t);
 				return a;
 			}
-			
-	      	if((f > 0) && (a->filhos[f-1]->nmats == t-1)){ 
-		        printf("\nCASO 3B: i igual a nchaves\n");
+
+	      	if((f > 0) && (a->filhos[f-1]->nmats == t-1)){
+		        printf("\nCASO 3B: i igual a nmats\n");
 		        z = a->filhos[f-1];
-		        
+
 		        if(!y->folha){
 			        if(f == a->nmats){
 			        	z->mats[z->nmats] = a->mats[f-1];
@@ -414,48 +417,50 @@ TABM* remover(TABM* a, int mat, int t){
 					}
 					z->nmats++;
 				}
-				
+
 				int j;
 				for(j=0; j < y->nmats; j++){
 					z->mats[z->nmats + j] = y->mats[j];
-					//z->nmats++; 
+					//z->nmats++;
 				}
-				
+
 				if(!y->folha){
-					for(j=0; j<y->nmats; j++){
+					for(j=0; j<y->nmats+1; j++){
 		            	z->filhos[z->nmats + j] = y->filhos[j];
 		            	y->filhos[j] = NULL;
-		          	}		
+		          	}
 				}
 		        else{
 		        	for(j=0; j<y->nmats; j++){
 						z->alunos[z->nmats + j] = y->alunos[j];
+						y->alunos[j] = NULL;
 					}
 					z->prox = y->prox;
 					if(z->prox)z->prox->ant = z;
-					
-					y->alunos[j] = NULL;
+
+					\\y->alunos[j] = NULL;
 					y->prox = NULL;
 					y->ant = NULL;
 				}
-		        
+
 		        z->nmats += y->nmats;
 				libera(y);
-				
+
 		        if(a->nmats == 1){ //so se for a raiz original
 		        	a->filhos[0] = NULL;
 					a->filhos[1] = NULL;
 					libera(a);
-					
-					a = y;
+
+					a = z;
 				}
 				else{
-					a->nmats--;	
+					a->nmats--;
 					a->filhos[f-1] = z;
+					a->filhos[f] = NULL;
 				}
-		        
+
 		        //a->filhos[f-1] = z;
-		        
+
 				a = remover(a, mat, t);
 		        return a;
 		    }
