@@ -156,8 +156,11 @@ void libera(TABM* a) {
             for (i = 0; i <= a->nmats; i++)
                 libera(a->filhos[i]);
         }
-        for (i = 0; i < a->nmats; i++)
-            free(a->alunos[i]);
+        //mudei aqui
+        else{
+        	for (i = 0; i < a->nmats; i++)
+            	free(a->alunos[i]);
+        }
         free(a->alunos);
         free(a->filhos);
         free(a->mats);
@@ -219,6 +222,25 @@ void libera_lista(TL* l) {
 		TL* a = l;
 		l = l->prox;
 		free(a);
+	}
+}
+
+void mostra_lista(TABM* a){
+	if(a){
+		TABM* p;
+		p = a;
+		while(!p->folha){
+			p=p->filhos[0];
+		}
+		
+		while(p){
+			int i;
+			for(i=0;i<p->nmats;i++){
+				printf("%d ",p->mats[i]);
+			}
+			printf("\n");
+			p=p->prox;
+		}
 	}
 }
 
@@ -375,16 +397,67 @@ TABM* remover(TABM* a, int mat, int t){
 
 				y->nmats += z->nmats;
 				//O PROBLEMA ESTA AQUI
+				
 				/*
 				for(j=0; j<z->nmats;j++){
 					printf("AAA");
 					if(z->filhos[j]) printf("%d",z->filhos[j]->mats[0]);
 					if(z->alunos[j]) printf("%d",z->alunos[j]->mat);
-				}*/
-
-				libera(z);
-				//printf("C");
-
+				}
+				if(z->prox) printf("tem prox");
+				if(z->ant) printf("tem ant");
+				*/
+				
+				/*
+				busca(a,508);
+				printf("ANTES DE LIBERAR");
+				
+				//libera(z);
+				if (z) {
+			    	int ajuda;
+			    	if (!z->folha) {
+			            for (ajuda = 0; ajuda <= z->nmats; ajuda++)
+			                libera(z->filhos[ajuda]);
+			        }
+			        //mudei aqui
+			        else{
+			        	for (ajuda = 0; ajuda < z->nmats; ajuda++)
+			            	free(z->alunos[ajuda]);
+			        }
+			        free(z->alunos);
+					busca(a,508);
+					printf("1");
+					printf("\n");
+					
+					
+					//O ERRO ESTA ABAIXO
+					
+					//int lola;
+					//for(lola = 0; lola<= z->nmats;lola++){
+					//	if(z->filhos[lola]) printf("TEM FILHO");
+					//}
+					
+					//printf("passou");
+					
+					mostra_lista(a);
+					printf("\n");
+					free(z->filhos);
+					mostra_lista(a);
+					
+					busca(a,508);
+					printf("2");
+			        free(z->mats);
+					busca(a,508);
+					printf("3");
+			        free(z);
+					busca(a,508);
+					printf("4");
+			        
+			    }
+				
+				busca(a,508);
+				printf("DEPOIS DE LIBERAR");
+				*/
 
 				if(a->nmats == 1){ //so acontece se for a raiz original
 					a->filhos[0] = NULL;
@@ -398,8 +471,65 @@ TABM* remover(TABM* a, int mat, int t){
 						a->mats[j] = a->mats[j+1];
 						a->filhos[j+1] = a->filhos[j+2];
 					}
+
+					//AAAAAAa
+                    //a->filhos[a->nmats] = NULL; //testando
+
+
 					a->nmats--;
 				}
+				
+				busca(a,508);
+				printf("AAAAAAA");
+				
+				
+				if (z) {
+			    	int ajuda;
+			    	if (!z->folha) {
+			            for (ajuda = 0; ajuda <= z->nmats; ajuda++)
+			                libera(z->filhos[ajuda]);
+			        }
+			        //mudei aqui
+			        else{
+			        	for (ajuda = 0; ajuda < z->nmats; ajuda++)
+			            	free(z->alunos[ajuda]);
+			        }
+			        free(z->alunos);
+					busca(a,508);
+					printf("1");
+					printf("\n");
+					
+					
+					//O ERRO ESTA ABAIXO
+					
+					//int lola;
+					//for(lola = 0; lola<= z->nmats;lola++){
+					//	if(z->filhos[lola]) printf("TEM FILHO");
+					//}
+					
+					//printf("passou");
+					
+					mostra_lista(a);
+					printf("\n");
+					//free(z->filhos);
+					mostra_lista(a);
+					
+					busca(a,508);
+					printf("2");
+			        free(z->mats);
+					busca(a,508);
+					printf("3");
+			        free(z);
+					busca(a,508);
+					printf("4");
+			        
+			    }
+				
+				
+				
+				busca(a,508);
+				printf("FINAL");
+				
 				a = remover(a,mat,t);
 				return a;
 			}
