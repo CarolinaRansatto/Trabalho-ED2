@@ -412,7 +412,6 @@ TABM* remover(TABM* a, int mat, int t){
 					y->mats[y->nmats] = a->mats[f];
 					y->nmats++;
 				}
-
 				int j;
 				for(j=0; j<z->nmats;j++){
 					y->mats[y->nmats + j] = z->mats[j];
@@ -441,7 +440,6 @@ TABM* remover(TABM* a, int mat, int t){
 					z->ant = NULL;
 
 				}
-
 				y->nmats += z->nmats;
 				//O PROBLEMA ESTA AQUI
 				
@@ -508,7 +506,6 @@ TABM* remover(TABM* a, int mat, int t){
 				busca(a,508);
 				printf("DEPOIS DE LIBERAR");
 				*/
-
 				if(a->nmats == 1){ //so acontece se for a raiz original
 					a->filhos[0] = NULL;
 					a->filhos[1] = NULL;
@@ -528,9 +525,6 @@ TABM* remover(TABM* a, int mat, int t){
 
 					a->nmats--;
 				}
-				
-				busca(a,508);
-				printf("AAAAAAA");
 				
 				/*
 				if (z) {
