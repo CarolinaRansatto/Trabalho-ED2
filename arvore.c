@@ -296,7 +296,7 @@ TABM* remover(TABM* a, int mat, int t){
 	printf("Removendo %d...\n", mat);
 
 	while ((i < a->nmats) && (mat > a->mats[i])) i++;
-	if ((!a->folha) && (i < a->nmats)){
+	if ((!a->folha) && (i < a->nmats) && (mat > a->mats[i])){
     	if(mat == a->mats[i]) i++;
 	}
 
