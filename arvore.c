@@ -24,6 +24,52 @@ TABM* cria_no(int t) {
     return a;
 }
 
+TA* busca_aluno_alternativa(TABM* a, int mat){
+	if(!a){
+		return NULL;
+	}
+    TABM *b = a;
+    while(b->folha != 1){
+        b = b->filhos[0];
+    }
+    int i;
+    while(1){
+        for(i=0; i<b->nmats;i++){
+            if(b->alunos[i]->mat == mat){
+            	return b->alunos[i];
+			}
+        }
+        if(!b->prox){
+            return NULL;
+        }
+        b = b->prox;
+    }
+    return NULL;
+}
+
+TABM* busca_alternativa(TABM* a, int mat){
+	if(!a){
+		return NULL;
+	}
+    TABM *b = a;
+    while(b->folha != 1){
+        b = b->filhos[0];
+    }
+    int i;
+    while(1){
+        for(i=0; i<b->nmats;i++){
+            if(b->alunos[i]->mat == mat){
+            	return b;
+			}
+        }
+        if(!b->prox){
+            return NULL;
+        }
+        b = b->prox;
+    }
+    return NULL;
+}
+
 TC* cria_curriculo(int num, int cht, int ntotper, int tnc) {
     TC* cur = (TC*) malloc(sizeof(TC));
     cur->num = num;
@@ -609,7 +655,7 @@ TABM* remover(TABM* a, int mat, int t){
 }
 
 TABM* retira(TABM* a, int mat, int t){
-  if(!a || !busca(a, mat)) return a;
+  if(!a || !busca_alternativa(a, mat)) return a;
   return remover(a, mat, t);
 }
 
