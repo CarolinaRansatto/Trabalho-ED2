@@ -657,7 +657,8 @@ TABM* remover(TABM* a, int mat, int t){
 }
 
 TABM* retira(TABM* a, int mat, int t){
-  //if(!a || !busca_aluno(a, mat)) return a;
+  if (!a) return a;
+  //if(!a || !busca_alternativa(a, mat)) return a;
   return remover(a, mat, t);
 }
 
