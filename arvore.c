@@ -296,8 +296,8 @@ TABM* remover(TABM* a, int mat, int t){
 	printf("Removendo %d...\n", mat);
 
 	while ((i < a->nmats) && (mat > a->mats[i])) i++;
-	if(!a->folha){
-            if(mat == a->mats[i]) i++;
+	if ((!a->folha) && (i < a->nmats)){
+    	if(mat == a->mats[i]) i++;
 	}
 
 	//printf("%d\n", i);
@@ -581,7 +581,7 @@ TABM* remover(TABM* a, int mat, int t){
 				a = remover(a,mat,t);
 				return a;
 			}
-
+			
 	      	if((f > 0) && (a->filhos[f-1]->nmats == t-1)){
 		        printf("\nCASO 3B: i igual a nmats\n");
 		        z = a->filhos[f-1];
@@ -637,13 +637,13 @@ TABM* remover(TABM* a, int mat, int t){
 					a->nmats--;
 					a->filhos[f-1] = z;
 					a->filhos[f] = NULL;
-					printf("7\n"); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+					//printf("7\n"); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 				}
 
 		        //a->filhos[f-1] = z;
 				
 				//printf("8\n"); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-				//o erro esta aqui pq ele busca por 508 mas 508 sumiu				
+				//o erro esta aqui pq ele busca por 508 mas 508 sumiu
 				a = remover(a, mat, t);
 				//printf("9\n"); //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 		        return a;
