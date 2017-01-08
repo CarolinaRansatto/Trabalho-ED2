@@ -35,7 +35,7 @@ TA* busca_aluno_alternativa(TABM* a, int mat){
     int i;
     while(1){
         for(i=0; i<b->nmats;i++){
-            if(b->alunos[i]->mat == mat){
+            if(b->mats[i] == mat){
             	return b->alunos[i];
 			}
         }
@@ -58,7 +58,7 @@ TABM* busca_alternativa(TABM* a, int mat){
     int i;
     while(1){
         for(i=0; i<b->nmats;i++){
-            if(b->alunos[i]->mat == mat){
+            if(b->mats[i] == mat){
             	return b;
 			}
         }
