@@ -290,15 +290,17 @@ void mostra_lista(TABM* a){
 	}
 }
 TABM* remover(TABM* a, int mat, int t){
-	if(!a) return NULL;
+	if(!a) {
+		printf("a nulo\n");
+		return NULL;
+	}
 	int i = 0;
 
 	printf("Removendo %d...\n", mat);
 
 	while ((i < a->nmats) && (mat > a->mats[i])) i++;
-	if ((!a->folha) && (i < a->nmats) && (mat > a->mats[i])){
-    	if(mat == a->mats[i]) i++;
-	}
+	if ((!a->folha) && (i < a->nmats) && (mat == a->mats[i])) i++;
+	printf("i %i, nmats %i\n", i, a->nmats);
 
 	//printf("%d\n", i);
 
@@ -655,7 +657,7 @@ TABM* remover(TABM* a, int mat, int t){
 }
 
 TABM* retira(TABM* a, int mat, int t){
-  if(!a || !busca_alternativa(a, mat)) return a;
+  //if(!a || !busca_aluno(a, mat)) return a;
   return remover(a, mat, t);
 }
 

@@ -141,6 +141,9 @@ int main()
 			    printf("\n%s", instrucoes);
                 scanf("%d",&opcao);
                 break;
+            case 12:
+            	mostra_lista(arvore);
+            	break;
             default:
                 printf("Opcao invalida!\n");
 			    printf("\n%s", instrucoes);
