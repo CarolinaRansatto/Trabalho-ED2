@@ -63,7 +63,7 @@ int main()
 			case 2:
 				printf("Digite a matricula: ");
 				scanf("%d", &mat);
-				aluno = busca_aluno_alternativa(arvore, mat);
+				aluno = busca_aluno(arvore, mat);
 				if (!aluno) printf("Aluno nao encontrado\n");
 				else printf("Nome: %s\nMatricula: %d\nCR:%f\nPeriodos na universidade: %d\nNumero de trancamentos: %d\nCarga horaria cursada com sucesso: %d\nNumero do curriculo: %d\n",
 					aluno->nome, aluno->mat, aluno->cr, aluno->npu, aluno->ntran, aluno->chcs, aluno->cur->num);
