@@ -352,7 +352,7 @@ TABM* remover(TABM* a, int mat, int t){
 
 				for(j=0; j<z->nmats-1; j++){ //rearranjar as informaÃƒÂ§ÃƒÂµes dos alunos
 					z->mats[j] = z->mats[j+1];
-					z->alunos[j] = y->alunos[j+1];
+					z->alunos[j] = z->alunos[j+1];
 				}
 
 				z->alunos[z->nmats-1] = NULL;
